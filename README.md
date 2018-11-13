@@ -1,3 +1,5 @@
+[![PyPI version](https://badge.fury.io/py/compressed-segmentation.svg)](https://badge.fury.io/py/compressed-segmentation) 
+
 NOTE: This repository is the PyPI distribution repo but is based on work done by Jeremy Maitin-Shepard (Google), Stephen Plaza (Janelia Research Campus), and William Silversmith (Princeton) here: https://github.com/janelia-flyem/compressedseg
 
 # Compress Seg [![Picture](https://raw.github.com/janelia-flyem/janelia-flyem.github.com/master/images/HHMI_Janelia_Color_Alternate_180x40.png)](http://www.janelia.org)
