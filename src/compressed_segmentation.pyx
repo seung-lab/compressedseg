@@ -205,8 +205,7 @@ def decompress(
   block_size: typically (8,8,8), the block size the file was encoded with.
   order: 'C' (XYZ) or 'F' (ZYX)
 
-  Returns: 4D numpy array with interface axes in XYZC order 
-    and internal memory layout in Fortran order.
+  Returns: 3D or 4D numpy array
   """
   dtype = np.dtype(dtype)
   if dtype == np.uint32:
