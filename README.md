@@ -23,7 +23,7 @@ g++ -std=c++11 -O3 -fPIC -shared -I./include src/compress_segmentation.cc src/de
 
 ### Python Installation
 
-`pip` Binary Installation  
+#### `pip` Binary Installation  
 
 ```bash
 $ pip install compressed-segmentation
@@ -35,7 +35,7 @@ $ python
 
 If there are pre-built binaries available for your architecture this should just work. 
 
-`pip` Source Installation 
+#### `pip` Source Installation 
 
 If you need to build from source, you will need to have a C++ compiler installed:
 
@@ -49,7 +49,7 @@ $ python
 >>> help(cseg)
 ```
 
-Direct Installation  
+#### Direct Installation  
 
 _Requires a C++ compiler such as g++ or clang._
 
