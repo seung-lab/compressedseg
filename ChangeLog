@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+1.0.0
+-----
+
+* feat: added ability to specify memory order for decompress
+* test: add very basic test of correctness
+* chore: cleanup go files
 * chore: infrastructure for building packages
 * fix: memory leak in cython bindings
 * feat: add Cython bindings and compilation directives
