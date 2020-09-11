@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+1.0.1
+-----
+
+* release(1.0.1): releasing new set of binaries with a new build system
 * chore: add appveyor.yml
 * chore: add py38 to docker build
 * chore: set readme type as markdown
