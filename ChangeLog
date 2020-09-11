@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+* chore: add appveyor.yml
+* chore: add py38 to docker build
+* chore: set readme type as markdown
+* Update README.md
+* docs: update doc string and add pip installation instructions
+* docs: add PyPI badge
+
 1.0.0
 -----
 
