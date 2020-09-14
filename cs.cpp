@@ -14,18 +14,29 @@
  * limitations under the License.
  *
  * Modified by: Stephen Plaza 2017 under LICENSE_JANELIA.txt
+ * Modified by: William Silversmith 2020 under PYTHON_LICENSE.txt
  */
 
-#include "compress_segmentation.h"
+#ifndef COMPRESSED_SEGMENTATION_H_
+#define COMPRESSED_SEGMENTATION_H_
 
 #include <algorithm>
+#include <cstddef>
+#include <cstdint>
+#include <functional>
+#include <iostream>
 #include <unordered_map>
+#include <vector>
 
-namespace compress_segmentation {
+using std::min;
+
+namespace compressed_segmentation {
+
+constexpr size_t kBlockHeaderSize = 2;
 
 // Hash function for a vector.
 struct HashVector {
-  template <class T>
+  template <typename T>
   size_t operator()(const std::vector<T>& x) const {
     std::hash<T> hasher;
     size_t result = 0;
@@ -36,11 +47,9 @@ struct HashVector {
   }
 };
 
-template <class Label>
+template <typename Label>
 using EncodedValueCache =
     std::unordered_map<std::vector<Label>, uint32_t, HashVector>;
-
-constexpr size_t kBlockHeaderSize = 2;
 
 void WriteBlockHeader(size_t encoded_value_base_offset,
                       size_t table_base_offset, size_t encoding_bits,
@@ -78,7 +87,7 @@ void WriteBlockHeader(size_t encoded_value_base_offset,
 //   cache: Cache of existing tables written and their corresponding offsets.
 //
 //   output_vec: Vector to which output will be appended.
-template <class Label>
+template <typename Label>
 void EncodeBlock(const Label* input, const ptrdiff_t input_strides[3],
                  const ptrdiff_t block_size[3], const ptrdiff_t actual_size[3],
                  size_t base_offset, size_t* encoded_bits_output,
@@ -103,11 +112,11 @@ void EncodeBlock(const Label* input, const ptrdiff_t input_strides[3],
   Label previous_value = input[0] + 1;
   {
     auto* input_z = input;
-    for (size_t z = 0; z < actual_size[2]; ++z) {
+    for (ptrdiff_t z = 0; z < actual_size[2]; ++z) {
       auto* input_y = input_z;
-      for (size_t y = 0; y < actual_size[1]; ++y) {
+      for (ptrdiff_t y = 0; y < actual_size[1]; ++y) {
         auto* input_x = input_y;
-        for (size_t x = 0; x < actual_size[0]; ++x) {
+        for (ptrdiff_t x = 0; x < actual_size[0]; ++x) {
           auto value = *input_x;
           // If this value matches the previous value, we can skip the more
           // expensive hash table lookup.
@@ -198,7 +207,7 @@ void EncodeBlock(const Label* input, const ptrdiff_t input_strides[3],
   }
 }
 
-template <class Label>
+template <typename Label>
 void CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
                      const ptrdiff_t volume_size[3],
                      const ptrdiff_t block_size[3],
@@ -240,7 +249,7 @@ void CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
   }
 }
 
-template <class Label>
+template <typename Label>
 void CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
                       const ptrdiff_t volume_size[4],
                       const ptrdiff_t block_size[3],
@@ -253,26 +262,111 @@ void CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
   }
 }
 
-#define DO_INSTANTIATE(Label)                                        \
-  template void EncodeBlock<Label>(                                  \
-      const Label* input, const ptrdiff_t input_strides[3],          \
-      const ptrdiff_t block_size[3], const ptrdiff_t actual_size[3], \
-      size_t base_offset, size_t* encoded_bits_output,               \
-      size_t* table_offset_output, EncodedValueCache<Label>* cache,  \
-      std::vector<uint32_t>* output_vec);                            \
-  template void CompressChannel<Label>(                              \
-      const Label* input, const ptrdiff_t input_strides[3],          \
-      const ptrdiff_t volume_size[3], const ptrdiff_t block_size[3], \
-      std::vector<uint32_t>* output);                                \
-  template void CompressChannels<Label>(                             \
-      const Label* input, const ptrdiff_t input_strides[4],          \
-      const ptrdiff_t volume_size[4], const ptrdiff_t block_size[3], \
-      std::vector<uint32_t>* output);                                \
-/**/
+// DECOMPRESSION BELOW HERE
 
-DO_INSTANTIATE(uint32_t)
-DO_INSTANTIATE(uint64_t)
 
-#undef DO_INSTANTIATE
+template <typename Label>
+void DecompressChannelArray(const uint32_t* input,
+                     const ptrdiff_t volume_size[3],
+                     const ptrdiff_t block_size[3],
+                     Label* output) 
+{
 
-}  // namespace compress_segmentation
+  // determine number of grids for volume specified and block size
+  // (must match what was encoded) 
+  ptrdiff_t grid_size[3];
+  for (size_t i = 0; i < 3; ++i) {
+    grid_size[i] = (volume_size[i] + block_size[i] - 1) / block_size[i];
+  }
+  
+  ptrdiff_t block[3];
+  for (block[2] = 0; block[2] < grid_size[2]; ++block[2]) {
+    for (block[1] = 0; block[1] < grid_size[1]; ++block[1]) {
+      for (block[0] = 0; block[0] < grid_size[0]; ++block[0]) {
+        const size_t block_offset =
+            block[0] + grid_size[0] * (block[1] + grid_size[1] * block[2]);
+        
+        size_t encoded_bits, tableoffset, encoded_value_start;
+        tableoffset = input[block_offset * kBlockHeaderSize] & 0xffffff;
+        encoded_bits = (input[block_offset * kBlockHeaderSize] >> 24) & 0xff;
+        encoded_value_start = input[block_offset * kBlockHeaderSize + 1];
+        size_t table_entry_size = sizeof(Label)/4;
+
+        // find absolute positions in output array 
+        size_t xmin = block[0] * block_size[0];
+        size_t xmax = min(xmin + block_size[0], size_t(volume_size[0]));
+
+        size_t ymin = block[1] * block_size[1];
+        size_t ymax = min(ymin + block_size[1], size_t(volume_size[1]));
+
+        size_t zmin = block[2] * block_size[2];
+        size_t zmax = min(zmin + block_size[2], size_t(volume_size[2]));
+
+        uint64_t bitmask = (1<<encoded_bits)-1;
+        for (size_t z = zmin; z < zmax; ++z) {
+            for (size_t y = ymin; y < ymax; ++y) {
+                size_t outindex = (z*(volume_size[1]) + y)*volume_size[0] + xmin;
+                size_t bitpos = block_size[0] * ((z-zmin) * (block_size[1]) +
+                         (y-ymin)) * encoded_bits;
+                for (size_t x = xmin; x < xmax; ++x, ++outindex) {
+                    size_t bitshift = bitpos % 32;
+
+                    size_t arraypos = bitpos / (32);
+                    size_t bitval = 0;
+                    if (encoded_bits > 0) {
+                        bitval = (input[encoded_value_start + arraypos] >> bitshift) & bitmask; 
+                    }
+                    Label val = input[tableoffset + bitval*table_entry_size];
+                    if (table_entry_size == 2) {
+                        val |=  uint64_t(input[tableoffset + bitval*table_entry_size+1]) << 32;
+                    }
+                    output[outindex] = val;
+                    bitpos += encoded_bits; 
+                }
+            }
+        }
+      }
+    }
+  }
+}
+
+template <typename Label>
+void DecompressChannel(
+  const uint32_t* input,
+  const ptrdiff_t volume_size[3],
+  const ptrdiff_t block_size[3],
+  std::vector<Label> &output
+) {
+
+  ptrdiff_t voxels = volume_size[0] * volume_size[1] * volume_size[2];
+  output->resize(output->size() + voxels);
+
+  Label* outarr = output.data();
+  DecompressChannelArray<Label>(input, volume_size, block_size, outarr + (output.size() - voxels));
+}
+
+template <typename Label>
+void DecompressChannels(
+  const uint32_t* input, const ptrdiff_t volume_size[4],
+  const ptrdiff_t block_size[3], std::vector<Label>* output) {
+  
+  for (size_t channel_i = 0; channel_i < volume_size[3]; ++channel_i) {
+    DecompressChannel(input + input[channel_i], volume_size, block_size, output);
+  }
+}
+
+template <typename Label>
+void DecompressChannelsArray(
+  const uint32_t* input, const ptrdiff_t volume_size[4],
+  const ptrdiff_t block_size[3], Label* output) {
+
+  const size_t channel_size = volume_size[0] * volume_size[1] * volume_size[2];
+
+  for (size_t channel_i = 0; channel_i < volume_size[3]; ++channel_i) {
+    DecompressChannelArray(input + input[channel_i], volume_size, block_size, output + channel_i * channel_size);
+  }
+}
+
+}
+
+#endif

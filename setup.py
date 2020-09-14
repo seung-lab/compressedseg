@@ -14,12 +14,9 @@ setuptools.setup(
     setuptools.Extension(
         'compressed_segmentation',
         optional=True,
-        sources=[ join('src', x) for x in ( 
-            'compress_segmentation.cc', 'decompress_segmentation.cc',
-            'compressed_segmentation.cpp'
-        )],
+        sources=[ 'compressed_segmentation.cpp' ],
         language='c++',
-        include_dirs=[ 'include', np.get_include() ],
+        include_dirs=[ np.get_include() ],
         extra_compile_args=[
           '-O3', '-std=c++11'
         ],
