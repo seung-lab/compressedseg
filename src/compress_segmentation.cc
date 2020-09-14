@@ -264,10 +264,10 @@ void CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
       const Label* input, const ptrdiff_t input_strides[3],          \
       const ptrdiff_t volume_size[3], const ptrdiff_t block_size[3], \
       std::vector<uint32_t>* output);                                \
-  template void CompressChannels<Label>(                             \
-      const Label* input, const ptrdiff_t input_strides[4],          \
-      const ptrdiff_t volume_size[4], const ptrdiff_t block_size[3], \
-      std::vector<uint32_t>* output);                                \
+  // template void CompressChannels<Label>(                             \
+  //     const Label* input, const ptrdiff_t input_strides[4],          \
+  //     const ptrdiff_t volume_size[4], const ptrdiff_t block_size[3], \
+  //     std::vector<uint32_t>* output);                                \
 /**/
 
 DO_INSTANTIATE(uint32_t)
