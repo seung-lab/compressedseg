@@ -60,8 +60,6 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
 
   Returns: byte string representing the encoded file
   """
-  cdef vector[uint32_t] *output = new vector[uint32_t]()
-
   if len(data.shape) < 4:
     data = data[ :, :, :, np.newaxis ]
 
@@ -89,8 +87,12 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
   cdef uint32_t[:,:,:,:] arr_memview32
   cdef uint64_t[:,:,:,:] arr_memview64
 
+  cdef vector[uint32_t] *output = new vector[uint32_t]()
+
   if data.dtype == np.uint32:
     arr_memview32 = data
+    if data.size == 0:
+      arr_memview32 = np.zeros((1,1,1,1), dtype=np.uint32)
     CompressChannels[uint32_t](
       <uint32_t*>&arr_memview32[0,0,0,0],
       <ptrdiff_t*>input_strides,
@@ -100,6 +102,8 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
     )
   else:
     arr_memview64 = data
+    if data.size == 0:
+      arr_memview64 = np.zeros((1,1,1,1), dtype=np.uint64)
     CompressChannels[uint64_t](
       <uint64_t*>&arr_memview64[0,0,0,0],
       <ptrdiff_t*>input_strides,
@@ -111,10 +115,7 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
   cdef uint32_t* output_ptr = <uint32_t *>&output[0][0]
   cdef uint32_t[:] vec_view = <uint32_t[:output.size()]>output_ptr
 
-  # This construct is required by python 2.
-  # Python 3 can just do bytes(vec_view)
-  bytestrout = bytes(bytearray(vec_view[:]))
-
+  bytestrout = bytes(vec_view[:])
   del output
   return bytestrout
 
@@ -122,6 +123,9 @@ cdef decompress_helper32(
     bytes encoded, volume_size, dtype, order, 
     block_size=DEFAULT_BLOCK_SIZE
   ):
+
+  if any([ sz == 0 for sz in volume_size ]):
+    return np.zeros(volume_size, dtype=dtype, order=order)
 
   decode_shape = volume_size
   if len(decode_shape) == 3:
@@ -154,6 +158,9 @@ cdef decompress_helper64(
     bytes encoded, volume_size, dtype, order, 
     block_size=DEFAULT_BLOCK_SIZE
   ):
+  
+  if any([ sz == 0 for sz in volume_size ]):
+    return np.zeros(volume_size, dtype=dtype, order=order)
   
   decode_shape = volume_size
   if len(decode_shape) == 3:
