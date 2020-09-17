@@ -9,9 +9,12 @@
 void trial() {
 	int sx, sy, sz;
 
-	sx = rand() % 512;
-	sy = rand() % 512;
-	sz = rand() % 512;
+	// sx = rand() % 512;
+	// sy = rand() % 512;
+	// sz = rand() % 512;
+	sx = 290;
+	sy = 290;
+	sz = 290;
 
 	printf("<%d,%d,%d>\n", sx,sy,sz);
 
@@ -19,7 +22,7 @@ void trial() {
 
 	uint32_t *labels = new uint32_t[voxels]();
 	for (size_t i = 0; i < voxels; i++) {
-		labels[i] = rand() % 10;
+		labels[i] = rand() % 320;
 	}
 
 	const ptrdiff_t strides[3] = { 1, sx, sx * sy };
@@ -34,6 +37,12 @@ void trial() {
 	auto* d_input = output->data();
 	compress_segmentation::DecompressChannel<uint32_t>(d_input, volume_size, block_size, recovered);
 
+	int bad = 0;
+	for (size_t i = 0; i < voxels; i++) {
+		bad += (labels[i] != (*recovered)[i]);
+	}
+	printf("bad: %d\n", bad);
+
 	delete[] labels;
 	delete output;
 	delete recovered;
@@ -41,7 +50,7 @@ void trial() {
 
 
 int main() {
-	for (int n = 0; n < 100; n++) {
+	for (int n = 0; n < 1; n++) {
 		if (n % 500 == 0) {
 			printf("n: %d\n", n);
 		}
