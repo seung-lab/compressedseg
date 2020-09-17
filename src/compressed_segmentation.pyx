@@ -90,9 +90,10 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
   cdef vector[uint32_t] *output = new vector[uint32_t]()
 
   if data.dtype == np.uint32:
-    arr_memview32 = data
     if data.size == 0:
       arr_memview32 = np.zeros((1,1,1,1), dtype=np.uint32)
+    else:
+      arr_memview32 = data
     CompressChannels[uint32_t](
       <uint32_t*>&arr_memview32[0,0,0,0],
       <ptrdiff_t*>input_strides,
@@ -101,9 +102,11 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
       output
     )
   else:
-    arr_memview64 = data
     if data.size == 0:
       arr_memview64 = np.zeros((1,1,1,1), dtype=np.uint64)
+    else:
+      arr_memview64 = data
+
     CompressChannels[uint64_t](
       <uint64_t*>&arr_memview64[0,0,0,0],
       <ptrdiff_t*>input_strides,
