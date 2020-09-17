@@ -35,3 +35,18 @@ def test_recover_random(dtype, order, variation):
       print("Non-matching: ", N)
 
     assert np.all(labels == recovered)
+
+@pytest.mark.parametrize('dtype', (np.uint32, np.uint64))
+@pytest.mark.parametrize('order', ("C", "F"))
+def test_table_offset_error(dtype, order):
+    sx = 300
+    sy = 300
+    sz = 300
+
+    labels = np.random.randint(10000, size=(sx, sy, sz), dtype=dtype)
+
+    try:
+        cseg.compress(labels, order=order)
+        assert False, "An OverflowError should have been triggered."
+    except OverflowError:
+        pass
