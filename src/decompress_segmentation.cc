@@ -15,7 +15,7 @@ using std::min;
 
 namespace compress_segmentation {
 
-constexpr size_t kBlockHeaderSize = 2;
+constexpr size_t dec_kBlockHeaderSize = 2;
 
 template <class Label>
 void DecompressChannel(const uint32_t* input,
@@ -26,6 +26,8 @@ void DecompressChannel(const uint32_t* input,
   const size_t base_offset = output->size();
   const size_t num_elements = volume_size[0]*volume_size[1]*volume_size[2]; 
   output->resize(base_offset + num_elements);
+
+  const size_t table_entry_size = (sizeof(Label) + sizeof(uint32_t) - 1) / sizeof(uint32_t);
 
   // determine number of grids for volume specified and block size
   // (must match what was encoded) 
@@ -42,10 +44,9 @@ void DecompressChannel(const uint32_t* input,
             block[0] + grid_size[0] * (block[1] + grid_size[1] * block[2]);
         
         size_t encoded_bits, tableoffset, encoded_value_start;
-        tableoffset = input[block_offset * kBlockHeaderSize] & 0xffffff;
-        encoded_bits = (input[block_offset * kBlockHeaderSize] >> 24) & 0xff;
-        encoded_value_start = input[block_offset * kBlockHeaderSize + 1];
-        size_t table_entry_size = sizeof(Label)/4;
+        tableoffset = input[block_offset * dec_kBlockHeaderSize] & 0xffffff;
+        encoded_bits = (input[block_offset * dec_kBlockHeaderSize] >> 24) & 0xff;
+        encoded_value_start = input[block_offset * dec_kBlockHeaderSize + 1];
 
         // find absolute positions in output array (+ base_offset)
         size_t xmin = block[0]*block_size[0];
@@ -73,7 +74,7 @@ void DecompressChannel(const uint32_t* input,
                     }
                     Label val = input[tableoffset + bitval*table_entry_size];
                     if (table_entry_size == 2) {
-                        val |=  uint64_t(input[tableoffset + bitval*table_entry_size+1]) << 32;
+                        val |= uint64_t(input[tableoffset + bitval*table_entry_size+1]) << 32;
                     }
                     (*output)[outindex] = val;
                     bitpos += encoded_bits; 
@@ -91,6 +92,22 @@ void DecompressChannels(const uint32_t* input,
                       const ptrdiff_t block_size[3],
                       std::vector<Label>* output)
 {
+
+  /*
+  A simple encoding is used to store multiple channels of compressed segmentation data 
+  (assumed to have the same x, y, and z dimensions and compression block size) together. 
+  The number of channels, num_channels, is assumed to be known.
+
+  The header consists of num_channels little-endian 32-bit unsigned integers specifying 
+  the offset, in 32-bit units from the start of the file, at which the data for each 
+  channel begins. The channels should be packed in order, and without any padding. 
+  The offset specified in the header for the first channel must be equal to num_channels.
+
+  In the special case that this format is used to encode just a single compressed 
+  segmentation channel, the compressed segmentation data is simply prefixed with a 
+  single 1 value (encoded as a little-endian 32-bit unsigned integer).
+  */
+
   for (size_t channel_i = 0; channel_i < volume_size[3]; ++channel_i) {
     DecompressChannel(input + input[channel_i], volume_size, block_size, output);
   }
