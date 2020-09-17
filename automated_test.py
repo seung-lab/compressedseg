@@ -22,9 +22,9 @@ def test_zero_size(dtype, order):
 @pytest.mark.parametrize('variation', (1,2,4,8,16,32,64,128,256,512,1024))
 def test_recover_random(dtype, order, variation):
   for _ in range(3):
-    sx = random.randint(0, 512)
-    sy = random.randint(0, 512)
-    sz = random.randint(0, 512)
+    sx = random.randint(0, 256)
+    sy = random.randint(0, 256)
+    sz = random.randint(0, 128)
 
     labels = np.random.randint(variation, size=(sx, sy, sz), dtype=dtype)
     compressed = cseg.compress(labels, order=order)
