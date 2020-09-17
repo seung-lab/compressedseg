@@ -45,9 +45,16 @@ constexpr size_t kBlockHeaderSize = 2;
 void WriteBlockHeader(size_t encoded_value_base_offset,
                       size_t table_base_offset, size_t encoding_bits,
                       uint32_t output[2]) {
+  if (table_base_offset >= (1<<24)) {
+    throw std::overflow_error(
+      "Unable to write header block, table offset larger than 24-bit encountered. "
+      "Try compressing a smaller unit of data."
+    );
+  }
   output[0] = table_base_offset | (encoding_bits << 24);
   output[1] = encoded_value_base_offset;
 }
+
 
 // Encodes a single block.
 //
