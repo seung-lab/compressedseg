@@ -84,7 +84,7 @@ namespace compress_segmentation {
 //
 //   output: Vector to which output will be appended.
 template <class Label>
-void CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
+int CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
                      const ptrdiff_t volume_size[3],
                      const ptrdiff_t block_size[3],
                      std::vector<uint32_t>* output);
@@ -111,7 +111,7 @@ void CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
 //   output: Vector where output will be stored.  Any existing content is
 //       cleared.
 template <class Label>
-void CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
+int CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
                       const ptrdiff_t volume_size[4],
                       const ptrdiff_t block_size[3],
                       std::vector<uint32_t>* output);

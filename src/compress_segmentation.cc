@@ -42,17 +42,15 @@ using EncodedValueCache =
 
 constexpr size_t kBlockHeaderSize = 2;
 
-void WriteBlockHeader(size_t encoded_value_base_offset,
+int WriteBlockHeader(size_t encoded_value_base_offset,
                       size_t table_base_offset, size_t encoding_bits,
                       uint32_t output[2]) {
   if (table_base_offset >= (1<<24)) {
-    throw std::overflow_error(
-      "Unable to write header block, table offset larger than 24-bit encountered. "
-      "Try compressing a smaller unit of data."
-    );
+    return 1;
   }
   output[0] = table_base_offset | (encoding_bits << 24);
   output[1] = encoded_value_base_offset;
+  return 0;
 }
 
 
@@ -206,7 +204,7 @@ void EncodeBlock(const Label* input, const ptrdiff_t input_strides[3],
 }
 
 template <class Label>
-void CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
+int CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
                      const ptrdiff_t volume_size[3],
                      const ptrdiff_t block_size[3],
                      std::vector<uint32_t>* output) {
@@ -239,25 +237,36 @@ void CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
         EncodeBlock(input + input_offset, input_strides, block_size,
                     actual_size, base_offset, &encoded_bits, &table_offset,
                     &cache, output);
-        WriteBlockHeader(
+        int error = WriteBlockHeader(
             encoded_value_base_offset, table_offset, encoded_bits,
             &(*output)[base_offset + block_offset * kBlockHeaderSize]);
+
+        if (error) {
+          return error;
+        }
       }
     }
   }
+
+  return 0;
 }
 
 template <class Label>
-void CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
+int CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
                       const ptrdiff_t volume_size[4],
                       const ptrdiff_t block_size[3],
                       std::vector<uint32_t>* output) {
   output->resize(volume_size[3]);
   for (size_t channel_i = 0; channel_i < volume_size[3]; ++channel_i) {
     (*output)[channel_i] = output->size();
-    CompressChannel(input + input_strides[3] * channel_i, input_strides,
+    int error = CompressChannel(input + input_strides[3] * channel_i, input_strides,
                     volume_size, block_size, output);
+    if (error) {
+      return error;
+    }
   }
+
+  return 0;
 }
 
 #define DO_INSTANTIATE(Label)                                        \
@@ -267,11 +276,11 @@ void CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
       size_t base_offset, size_t* encoded_bits_output,               \
       size_t* table_offset_output, EncodedValueCache<Label>* cache,  \
       std::vector<uint32_t>* output_vec);                            \
-  template void CompressChannel<Label>(                              \
+  template int CompressChannel<Label>(                              \
       const Label* input, const ptrdiff_t input_strides[3],          \
       const ptrdiff_t volume_size[3], const ptrdiff_t block_size[3], \
       std::vector<uint32_t>* output);                                \
-  template void CompressChannels<Label>(                             \
+  template int CompressChannels<Label>(                             \
       const Label* input, const ptrdiff_t input_strides[4],          \
       const ptrdiff_t volume_size[4], const ptrdiff_t block_size[3], \
       std::vector<uint32_t>* output);                                \

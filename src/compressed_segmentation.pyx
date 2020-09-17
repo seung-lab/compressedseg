@@ -27,7 +27,7 @@ cimport numpy as cnp
 import numpy as np
 
 cdef extern from "compress_segmentation.h" namespace "compress_segmentation":
-  cdef void CompressChannels[Label](
+  cdef int CompressChannels[Label](
     Label* input, 
     const ptrdiff_t input_strides[4],
     const ptrdiff_t volume_size[4],
@@ -88,13 +88,14 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
   cdef uint64_t[:,:,:,:] arr_memview64
 
   cdef vector[uint32_t] *output = new vector[uint32_t]()
+  cdef int error = 0
 
   if data.dtype == np.uint32:
     if data.size == 0:
       arr_memview32 = np.zeros((1,1,1,1), dtype=np.uint32)
     else:
       arr_memview32 = data
-    CompressChannels[uint32_t](
+    error = CompressChannels[uint32_t](
       <uint32_t*>&arr_memview32[0,0,0,0],
       <ptrdiff_t*>input_strides,
       <ptrdiff_t*>volume_size,
@@ -107,12 +108,18 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
     else:
       arr_memview64 = data
 
-    CompressChannels[uint64_t](
+    error = CompressChannels[uint64_t](
       <uint64_t*>&arr_memview64[0,0,0,0],
       <ptrdiff_t*>input_strides,
       <ptrdiff_t*>volume_size,
       <ptrdiff_t*>block_sizeptr,
       output
+    )
+
+  if error:
+    raise OverflowError(
+      "The input data were too large and varied and generated a table offset larger than 24-bits.\n"
+      "See lookupTableOffset: https://github.com/google/neuroglancer/blob/c9a6b9948dd416997c91e655ec3d67bf6b7e771b/src/neuroglancer/sliceview/compressed_segmentation/README.md#format-specification"
     )
 
   cdef uint32_t* output_ptr = <uint32_t *>&output[0][0]
