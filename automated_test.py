@@ -1,5 +1,4 @@
 import pytest
-from cloudvolume import view
 import compressed_segmentation as cseg 
 import numpy as np
 import random
