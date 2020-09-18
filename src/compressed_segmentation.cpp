@@ -2639,7 +2639,7 @@ static const char __pyx_k_Invalid_shape_in_axis_d_d[] = "Invalid shape in axis %
 static const char __pyx_k_itemsize_0_for_cython_array[] = "itemsize <= 0 for cython.array";
 static const char __pyx_k_unable_to_allocate_array_data[] = "unable to allocate array data.";
 static const char __pyx_k_strided_and_direct_or_indirect[] = "<strided and direct or indirect>";
-static const char __pyx_k_Cython_binding_for_the_C_compre[] = "\nCython binding for the C++ compressed_segmentation\nlibrary by Jeremy Maitin-Shepard and Stephen Plaza.\n\nImage label encoding algorithm binding. Compatible with\nneuroglancer.\n\nKey methods: compress, decompress\n\nLicense: BSD 3-Clause\n\nAuthor: William Silversmith\nAffiliation: Seung Lab, Princeton Neuroscience Institute\nDate: July 2018\n";
+static const char __pyx_k_Cython_binding_for_the_C_compre[] = "\nCython binding for the C++ compressed_segmentation\nlibrary by Jeremy Maitin-Shepard and Stephen Plaza.\n\nImage label encoding algorithm binding. Compatible with\nneuroglancer.\n\nKey methods: compress, decompress\n\nLicense: BSD 3-Clause\n\nAuthor: William Silversmith\nAffiliation: Seung Lab, Princeton Neuroscience Institute\nDate: July 2018 - September 2020\n";
 static const char __pyx_k_numpy_core_multiarray_failed_to[] = "numpy.core.multiarray failed to import";
 static const char __pyx_k_src_compressed_segmentation_pyx[] = "src/compressed_segmentation.pyx";
 static const char __pyx_k_Buffer_view_does_not_expose_stri[] = "Buffer view does not expose strides";

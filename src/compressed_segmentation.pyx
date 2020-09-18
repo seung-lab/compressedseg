@@ -11,7 +11,7 @@ License: BSD 3-Clause
 
 Author: William Silversmith
 Affiliation: Seung Lab, Princeton Neuroscience Institute
-Date: July 2018
+Date: July 2018 - September 2020
 """
 
 from libc.stdio cimport FILE, fopen, fwrite, fclose
