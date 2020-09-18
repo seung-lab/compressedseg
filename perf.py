@@ -5,7 +5,7 @@ import random
 import time
 
 
-def measure(dtype, order, N=20):
+def measure(dtype, order, N=20, block_size=(8,8,8)):
   csec = 0
   dsec = 0
   voxels = 0
@@ -23,12 +23,12 @@ def measure(dtype, order, N=20):
     input_bytes += labels.nbytes
 
     s = time.time()
-    compressed = cseg.compress(labels, order=order)
+    compressed = cseg.compress(labels, order=order, block_size=block_size)
     csec += time.time() - s
     output_bytes = len(compressed)
 
     s = time.time()
-    recovered = cseg.decompress(compressed, (sx, sy, sz), dtype=dtype, order=order)
+    recovered = cseg.decompress(compressed, (sx, sy, sz), dtype=dtype, order=order, block_size=block_size)
     dsec += time.time() - s
 
     assert np.all(labels == recovered)
@@ -41,7 +41,8 @@ def measure(dtype, order, N=20):
   print("Decompression: {:.2f} sec :: {:.2f} MVx/sec".format(dsec, voxels / dsec / 1e6))
 
 
-measure(np.uint32, 'C')
-measure(np.uint32, 'F')
-measure(np.uint64, 'C')
-measure(np.uint64, 'F')
+bks=(8,8,8)
+measure(np.uint32, 'C', block_size=bks)
+measure(np.uint32, 'F', block_size=bks)
+measure(np.uint64, 'C', block_size=bks)
+measure(np.uint64, 'F', block_size=bks)
