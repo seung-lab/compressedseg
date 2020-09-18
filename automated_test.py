@@ -16,6 +16,24 @@ def test_zero_size(dtype, order):
 
     assert labels.shape == recovered.shape
 
+def check_compressed_headers(compressed, shape, block_size):
+    compressed = np.frombuffer(compressed, dtype=np.uint32)
+    # test headers for correctness
+    assert compressed[0] == 1 # only 1 channel
+    # 64 bit block header 
+    # encoded bits (8 bit), lookup table offset (24 bit), encodedValuesOffset (32)
+    grid = np.ceil(
+        np.array(shape, dtype=np.float32) / np.array(block_size, dtype=np.float32)
+    ).astype(np.uint32)
+    for i in range(np.prod(grid)):
+      encodedbits = (compressed[2*i + 1] & 0xff000000) >> 24
+      table_offset = compressed[2*i + 1] & 0x00ffffff
+      encoded_offset = compressed[(2*i + 1) + 1]
+
+      assert encodedbits in (0, 1, 2, 4, 8, 16, 32)
+      assert table_offset < len(compressed)
+      assert encoded_offset < len(compressed)
+
 @pytest.mark.parametrize('dtype', (np.uint32, np.uint64))
 @pytest.mark.parametrize('order', ("C", "F"))
 @pytest.mark.parametrize('variation', (1,2,4,8,16,32,64,128,256,512,1024))
@@ -29,6 +47,9 @@ def test_recover_random(dtype, order, block_size, variation):
     labels = np.random.randint(variation, size=(sx, sy, sz), dtype=dtype)
     labels = np.copy(labels, order=order)
     compressed = cseg.compress(labels, block_size=block_size, order=order)
+
+    check_compressed_headers(compressed, [sx,sy,sz], block_size)
+
     recovered = cseg.decompress(
         compressed, (sx, sy, sz), 
         block_size=block_size, dtype=dtype, 
