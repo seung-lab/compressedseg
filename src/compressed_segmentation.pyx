@@ -40,6 +40,7 @@ cdef extern from "decompress_segmentation.h" namespace "compress_segmentation":
     const uint32_t* input,
     const ptrdiff_t volume_size[4],
     const ptrdiff_t block_size[3],
+    const ptrdiff_t strides[4],
     vector[Label]* output
   )
 
@@ -145,6 +146,18 @@ cdef decompress_helper32(
   cdef uint32_t* uintencodedptr = <uint32_t*>encodedptr;
   cdef ptrdiff_t[4] volsize = decode_shape
   cdef ptrdiff_t[3] blksize = block_size
+  cdef ptrdiff_t[4] strides = [ 
+    1, 
+    volsize[0], 
+    volsize[0] * volsize[1], 
+    volsize[0] * volsize[1] * volsize[2] 
+  ]
+
+  if order == 'F':
+    strides[0] = volsize[1] * volsize[2] * volsize[3]
+    strides[1] = volsize[2] * volsize[3]
+    strides[2] = volsize[3]
+    strides[3] = 1
 
   cdef vector[uint32_t] *output = new vector[uint32_t]()
 
@@ -152,6 +165,7 @@ cdef decompress_helper32(
     uintencodedptr,
     volsize,
     blksize,
+    strides,
     output
   )
   
@@ -180,6 +194,18 @@ cdef decompress_helper64(
   cdef uint32_t* uintencodedptr = <uint32_t*>encodedptr;
   cdef ptrdiff_t[4] volsize = decode_shape
   cdef ptrdiff_t[3] blksize = block_size
+  cdef ptrdiff_t[4] strides = [ 
+    1, 
+    volsize[0], 
+    volsize[0] * volsize[1], 
+    volsize[0] * volsize[1] * volsize[2] 
+  ]
+
+  if order == 'F':
+    strides[0] = volsize[1] * volsize[2] * volsize[3]
+    strides[1] = volsize[2] * volsize[3]
+    strides[2] = volsize[3]
+    strides[3] = 1
 
   cdef vector[uint64_t] *output = new vector[uint64_t]()
 
@@ -187,6 +213,7 @@ cdef decompress_helper64(
     uintencodedptr,
     volsize,
     blksize,
+    strides,
     output
   )
   
