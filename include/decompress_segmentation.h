@@ -40,7 +40,9 @@ template <class Label>
 void DecompressChannel(const uint32_t* input,
                      const ptrdiff_t volume_size[3],
                      const ptrdiff_t block_size[3],
-                     std::vector<Label>* output);
+                     const ptrdiff_t strides[4],
+                     std::vector<Label>* output,
+                     const ptrdiff_t channel);
 
 // Encodes multiple channels.
 //
@@ -63,6 +65,7 @@ template <class Label>
 void DecompressChannels(const uint32_t* input,
                       const ptrdiff_t volume_size[4],
                       const ptrdiff_t block_size[3],
+                      const ptrdiff_t strides[4],
                       std::vector<Label>* output);
 
 }  // namespace compress_segmentation
