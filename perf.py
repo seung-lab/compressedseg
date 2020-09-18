@@ -28,6 +28,8 @@ def measure(dtype, order, N=20):
     dsec += time.time() - s
 
     assert np.all(labels == recovered)
+    assert labels.flags.f_contiguous == recovered.flags.f_contiguous
+    assert labels.flags.c_contiguous == recovered.flags.c_contiguous
 
   print("MVx: {:.2f}, {}, order: {}".format(voxels / 1e6, dtype, order))
   print("Compression: {:.2f} sec :: {:.2f} MVx/sec".format(csec, voxels / csec / 1e6))
