@@ -1,6 +1,9 @@
 [![PyPI version](https://badge.fury.io/py/compressed-segmentation.svg)](https://badge.fury.io/py/compressed-segmentation) 
 
-```
+# Compress Seg [![Picture](https://raw.github.com/janelia-flyem/janelia-flyem.github.com/master/images/HHMI_Janelia_Color_Alternate_180x40.png)](http://www.janelia.org)
+## Library for compressing and decompressing image segmentation (adapted from [neuroglancer](https://github.com/google/neuroglancer))
+
+```python
 import compressed_segmentation
 
 sx, sy, sz = (128,128,128)
@@ -15,9 +18,6 @@ recovered = compressed_segmentation.decompress(
 ```
 
 NOTE: This repository is the PyPI distribution repo but is based on work done by Jeremy Maitin-Shepard (Google), Stephen Plaza (Janelia Research Campus), and William Silversmith (Princeton) here: https://github.com/janelia-flyem/compressedseg
-
-# Compress Seg [![Picture](https://raw.github.com/janelia-flyem/janelia-flyem.github.com/master/images/HHMI_Janelia_Color_Alternate_180x40.png)](http://www.janelia.org)
-## Library for compressing and decompressing image segmentation (adapted from [neuroglancer](https://github.com/google/neuroglancer))
 
 This library contains routined to decompress and compress segmentation and to manipulate compressed segmentation data defined by the [neuroglancer project](https://github.com/google/neuroglancer/blob/master/src/neuroglancer/sliceview/compressed_segmentation/README.md). compressed_segmentation essentially renumbers large bit width labels to smaller ones in chunks. This provides for large reductions in memory usage and higher compression.
 
