@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+2.0.1
+-----
+
+* release(2.0.1): fixes additional swaps in C/F order
+* chore: update Changelog
+* fix: several inversions of F and C order
+
 2.0.0
 -----
 
