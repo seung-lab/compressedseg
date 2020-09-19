@@ -1,6 +1,27 @@
 CHANGES
 =======
 
+2.0.0
+-----
+
+* release(2.0.0): compression safeguards, sensible order parameter, handles zero dimension
+* test(perf.py): add block sizes to performance testing
+* test: check for header integrity
+* test: add block size to random testing
+* fix: ordering didn't make sense (#3)
+* fix: remove "cloudvolume" from automated testing
+* docs: discuss data-dependent limitation of format
+* test: add automated testing to appveyor
+* test: adjust "normal" test to avoid triggering OverflowError
+* test: ensure safeguards for table offset actually work
+* fix: make overflow error intelligible to python
+* fix(compress\_segmentation): check that table offset is valid before writing
+* test: add explicit test for zero size
+* fix: handle null dimensions (#1)
+* fix: naming collision for kBlockHeaderSize (#2)
+* chore: remove extraneous Dockerfile
+* fix(Dockerfiles): remove references to non-existent tests
+
 1.0.1
 -----
 
