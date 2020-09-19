@@ -1,5 +1,19 @@
 [![PyPI version](https://badge.fury.io/py/compressed-segmentation.svg)](https://badge.fury.io/py/compressed-segmentation) 
 
+```
+import compressed_segmentation
+
+sx, sy, sz = (128,128,128)
+dtype = np.uint64
+order = 'C'
+
+labels = np.arange(0, sx*sy*sz, dtype=dtype).reshape((sx,sy,sz), order=order)
+compressed = compressed_segmentation.compress(labels, order=order)
+recovered = compressed_segmentation.decompress(
+    compressed, (sx,sy,sz) dtype=dtype, order=order
+)
+```
+
 NOTE: This repository is the PyPI distribution repo but is based on work done by Jeremy Maitin-Shepard (Google), Stephen Plaza (Janelia Research Campus), and William Silversmith (Princeton) here: https://github.com/janelia-flyem/compressedseg
 
 # Compress Seg [![Picture](https://raw.github.com/janelia-flyem/janelia-flyem.github.com/master/images/HHMI_Janelia_Color_Alternate_180x40.png)](http://www.janelia.org)
