@@ -72,7 +72,7 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
 
   cdef ptrdiff_t input_strides[3]
 
-  if order == 'C':
+  if order == 'F':
     input_strides[:] = [ 
       1,
       volume_size[0],
@@ -153,7 +153,7 @@ cdef decompress_helper32(
     volsize[0] * volsize[1] * volsize[2] 
   ]
 
-  if order == 'F':
+  if order == 'C':
     strides[0] = volsize[1] * volsize[2] * volsize[3]
     strides[1] = volsize[2] * volsize[3]
     strides[2] = volsize[3]
@@ -201,7 +201,7 @@ cdef decompress_helper64(
     volsize[0] * volsize[1] * volsize[2] 
   ]
 
-  if order == 'F':
+  if order == 'C':
     strides[0] = volsize[1] * volsize[2] * volsize[3]
     strides[1] = volsize[2] * volsize[3]
     strides[2] = volsize[3]

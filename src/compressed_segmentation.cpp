@@ -1257,7 +1257,7 @@ struct __pyx_opt_args_23compressed_segmentation_decompress_helper32 {
   PyObject *block_size;
 };
 
-/* "compressed_segmentation.pyx":182
+/* "compressed_segmentation.pyx":183
  * 
  * cdef decompress_helper64(
  *     bytes encoded, volume_size, dtype, order,             # <<<<<<<<<<<<<<
@@ -3107,16 +3107,16 @@ static PyObject *__pyx_pf_23compressed_segmentation_compress(CYTHON_UNUSED PyObj
   /* "compressed_segmentation.pyx":75
  *   cdef ptrdiff_t input_strides[3]
  * 
- *   if order == 'C':             # <<<<<<<<<<<<<<
+ *   if order == 'F':             # <<<<<<<<<<<<<<
  *     input_strides[:] = [
  *       1,
  */
-  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_order, __pyx_n_u_C, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
+  __pyx_t_3 = (__Pyx_PyUnicode_Equals(__pyx_v_order, __pyx_n_u_F, Py_EQ)); if (unlikely(__pyx_t_3 < 0)) __PYX_ERR(0, 75, __pyx_L1_error)
   if (__pyx_t_3) {
 
     /* "compressed_segmentation.pyx":76
  * 
- *   if order == 'C':
+ *   if order == 'F':
  *     input_strides[:] = [             # <<<<<<<<<<<<<<
  *       1,
  *       volume_size[0],
@@ -3129,7 +3129,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_compress(CYTHON_UNUSED PyObj
     /* "compressed_segmentation.pyx":75
  *   cdef ptrdiff_t input_strides[3]
  * 
- *   if order == 'C':             # <<<<<<<<<<<<<<
+ *   if order == 'F':             # <<<<<<<<<<<<<<
  *     input_strides[:] = [
  *       1,
  */
@@ -3864,16 +3864,16 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper32(PyObject 
   /* "compressed_segmentation.pyx":156
  *   ]
  * 
- *   if order == 'F':             # <<<<<<<<<<<<<<
+ *   if order == 'C':             # <<<<<<<<<<<<<<
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]
  *     strides[1] = volsize[2] * volsize[3]
  */
-  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_order, __pyx_n_u_F, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 156, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_order, __pyx_n_u_C, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 156, __pyx_L1_error)
   if (__pyx_t_6) {
 
     /* "compressed_segmentation.pyx":157
  * 
- *   if order == 'F':
+ *   if order == 'C':
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]             # <<<<<<<<<<<<<<
  *     strides[1] = volsize[2] * volsize[3]
  *     strides[2] = volsize[3]
@@ -3881,7 +3881,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper32(PyObject 
     (__pyx_v_strides[0]) = (((__pyx_v_volsize[1]) * (__pyx_v_volsize[2])) * (__pyx_v_volsize[3]));
 
     /* "compressed_segmentation.pyx":158
- *   if order == 'F':
+ *   if order == 'C':
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]
  *     strides[1] = volsize[2] * volsize[3]             # <<<<<<<<<<<<<<
  *     strides[2] = volsize[3]
@@ -3910,7 +3910,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper32(PyObject 
     /* "compressed_segmentation.pyx":156
  *   ]
  * 
- *   if order == 'F':             # <<<<<<<<<<<<<<
+ *   if order == 'C':             # <<<<<<<<<<<<<<
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]
  *     strides[1] = volsize[2] * volsize[3]
  */
@@ -3980,7 +3980,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper32(PyObject 
  *   # Python 3 can just do np.frombuffer(vec_view, ...)
  *   buf = bytearray(vec_view[:])             # <<<<<<<<<<<<<<
  *   del output
- *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
+ *   # new_order = 'C' if order == 'F' else 'F'
  */
   __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_vec_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_uint32_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_uint32_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 177, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -3994,49 +3994,49 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper32(PyObject 
  *   # Python 3 can just do np.frombuffer(vec_view, ...)
  *   buf = bytearray(vec_view[:])
  *   del output             # <<<<<<<<<<<<<<
+ *   # new_order = 'C' if order == 'F' else 'F'
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
- * 
  */
   delete __pyx_v_output;
 
-  /* "compressed_segmentation.pyx":179
- *   buf = bytearray(vec_view[:])
+  /* "compressed_segmentation.pyx":180
  *   del output
+ *   # new_order = 'C' if order == 'F' else 'F'
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )             # <<<<<<<<<<<<<<
  * 
  * cdef decompress_helper64(
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_frombuffer); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_frombuffer); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_buf);
   __Pyx_GIVEREF(__pyx_v_buf);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_buf);
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 179, __pyx_L1_error)
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 179, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_reshape); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_reshape); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_v_volume_size);
   __Pyx_GIVEREF(__pyx_v_volume_size);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_v_volume_size);
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 179, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_v_order) < 0) __PYX_ERR(0, 179, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 179, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_v_order) < 0) __PYX_ERR(0, 180, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 180, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -4073,7 +4073,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper32(PyObject 
   return __pyx_r;
 }
 
-/* "compressed_segmentation.pyx":181
+/* "compressed_segmentation.pyx":182
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
  * 
  * cdef decompress_helper64(             # <<<<<<<<<<<<<<
@@ -4120,7 +4120,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
     }
   }
 
-  /* "compressed_segmentation.pyx":186
+  /* "compressed_segmentation.pyx":187
  *   ):
  * 
  *   if any([ sz == 0 for sz in volume_size ]):             # <<<<<<<<<<<<<<
@@ -4128,32 +4128,32 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  * 
  */
   { /* enter inner scope */
-    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 186, __pyx_L6_error)
+    __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L6_error)
     __Pyx_GOTREF(__pyx_t_1);
     if (likely(PyList_CheckExact(__pyx_v_volume_size)) || PyTuple_CheckExact(__pyx_v_volume_size)) {
       __pyx_t_2 = __pyx_v_volume_size; __Pyx_INCREF(__pyx_t_2); __pyx_t_3 = 0;
       __pyx_t_4 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_volume_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L6_error)
+      __pyx_t_3 = -1; __pyx_t_2 = PyObject_GetIter(__pyx_v_volume_size); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 186, __pyx_L6_error)
+      __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 187, __pyx_L6_error)
     }
     for (;;) {
       if (likely(!__pyx_t_4)) {
         if (likely(PyList_CheckExact(__pyx_t_2))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 186, __pyx_L6_error)
+          __pyx_t_5 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 187, __pyx_L6_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 186, __pyx_L6_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_2)) break;
           #if CYTHON_ASSUME_SAFE_MACROS && !CYTHON_AVOID_BORROWED_REFS
-          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 186, __pyx_L6_error)
+          __pyx_t_5 = PyTuple_GET_ITEM(__pyx_t_2, __pyx_t_3); __Pyx_INCREF(__pyx_t_5); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 187, __pyx_L6_error)
           #else
-          __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 186, __pyx_L6_error)
+          __pyx_t_5 = PySequence_ITEM(__pyx_t_2, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L6_error)
           __Pyx_GOTREF(__pyx_t_5);
           #endif
         }
@@ -4163,7 +4163,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(__Pyx_PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 186, __pyx_L6_error)
+            else __PYX_ERR(0, 187, __pyx_L6_error)
           }
           break;
         }
@@ -4171,9 +4171,9 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
       }
       __Pyx_XDECREF_SET(__pyx_8genexpr1__pyx_v_sz, __pyx_t_5);
       __pyx_t_5 = 0;
-      __pyx_t_5 = __Pyx_PyInt_EqObjC(__pyx_8genexpr1__pyx_v_sz, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 186, __pyx_L6_error)
+      __pyx_t_5 = __Pyx_PyInt_EqObjC(__pyx_8genexpr1__pyx_v_sz, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L6_error)
       __Pyx_GOTREF(__pyx_t_5);
-      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 186, __pyx_L6_error)
+      if (unlikely(__Pyx_ListComp_Append(__pyx_t_1, (PyObject*)__pyx_t_5))) __PYX_ERR(0, 187, __pyx_L6_error)
       __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
     }
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4184,14 +4184,14 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
     goto __pyx_L1_error;
     __pyx_L9_exit_scope:;
   } /* exit inner scope */
-  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_any, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_builtin_any, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 186, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_PyObject_IsTrue(__pyx_t_2); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 187, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   if (__pyx_t_6) {
 
-    /* "compressed_segmentation.pyx":187
+    /* "compressed_segmentation.pyx":188
  * 
  *   if any([ sz == 0 for sz in volume_size ]):
  *     return np.zeros(volume_size, dtype=dtype, order=order)             # <<<<<<<<<<<<<<
@@ -4199,21 +4199,21 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  *   decode_shape = volume_size
  */
     __Pyx_XDECREF(__pyx_r);
-    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_zeros); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 188, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 188, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
     __Pyx_INCREF(__pyx_v_volume_size);
     __Pyx_GIVEREF(__pyx_v_volume_size);
     PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_v_volume_size);
-    __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 187, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 188, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 187, __pyx_L1_error)
-    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_order, __pyx_v_order) < 0) __PYX_ERR(0, 187, __pyx_L1_error)
-    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 187, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 188, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_order, __pyx_v_order) < 0) __PYX_ERR(0, 188, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_2, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 188, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
@@ -4222,7 +4222,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
     __pyx_t_7 = 0;
     goto __pyx_L0;
 
-    /* "compressed_segmentation.pyx":186
+    /* "compressed_segmentation.pyx":187
  *   ):
  * 
  *   if any([ sz == 0 for sz in volume_size ]):             # <<<<<<<<<<<<<<
@@ -4231,7 +4231,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
   }
 
-  /* "compressed_segmentation.pyx":189
+  /* "compressed_segmentation.pyx":190
  *     return np.zeros(volume_size, dtype=dtype, order=order)
  * 
  *   decode_shape = volume_size             # <<<<<<<<<<<<<<
@@ -4241,31 +4241,31 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
   __Pyx_INCREF(__pyx_v_volume_size);
   __pyx_v_decode_shape = __pyx_v_volume_size;
 
-  /* "compressed_segmentation.pyx":190
+  /* "compressed_segmentation.pyx":191
  * 
  *   decode_shape = volume_size
  *   if len(decode_shape) == 3:             # <<<<<<<<<<<<<<
  *     decode_shape = (volume_size[0], volume_size[1], volume_size[2], 1)
  * 
  */
-  __pyx_t_3 = PyObject_Length(__pyx_v_decode_shape); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 190, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_v_decode_shape); if (unlikely(__pyx_t_3 == ((Py_ssize_t)-1))) __PYX_ERR(0, 191, __pyx_L1_error)
   __pyx_t_6 = ((__pyx_t_3 == 3) != 0);
   if (__pyx_t_6) {
 
-    /* "compressed_segmentation.pyx":191
+    /* "compressed_segmentation.pyx":192
  *   decode_shape = volume_size
  *   if len(decode_shape) == 3:
  *     decode_shape = (volume_size[0], volume_size[1], volume_size[2], 1)             # <<<<<<<<<<<<<<
  * 
  *   cdef unsigned char *encodedptr = <unsigned char*>encoded
  */
-    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_volume_size, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 191, __pyx_L1_error)
+    __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_volume_size, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_volume_size, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 191, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetItemInt(__pyx_v_volume_size, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_volume_size, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 191, __pyx_L1_error)
+    __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_volume_size, 2, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_2);
-    __pyx_t_1 = PyTuple_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 191, __pyx_L1_error)
+    __pyx_t_1 = PyTuple_New(4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_GIVEREF(__pyx_t_7);
     PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_t_7);
@@ -4282,7 +4282,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
     __Pyx_DECREF_SET(__pyx_v_decode_shape, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "compressed_segmentation.pyx":190
+    /* "compressed_segmentation.pyx":191
  * 
  *   decode_shape = volume_size
  *   if len(decode_shape) == 3:             # <<<<<<<<<<<<<<
@@ -4291,7 +4291,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
   }
 
-  /* "compressed_segmentation.pyx":193
+  /* "compressed_segmentation.pyx":194
  *     decode_shape = (volume_size[0], volume_size[1], volume_size[2], 1)
  * 
  *   cdef unsigned char *encodedptr = <unsigned char*>encoded             # <<<<<<<<<<<<<<
@@ -4300,12 +4300,12 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
   if (unlikely(__pyx_v_encoded == Py_None)) {
     PyErr_SetString(PyExc_TypeError, "expected bytes, NoneType found");
-    __PYX_ERR(0, 193, __pyx_L1_error)
+    __PYX_ERR(0, 194, __pyx_L1_error)
   }
-  __pyx_t_8 = __Pyx_PyBytes_AsWritableUString(__pyx_v_encoded); if (unlikely((!__pyx_t_8) && PyErr_Occurred())) __PYX_ERR(0, 193, __pyx_L1_error)
+  __pyx_t_8 = __Pyx_PyBytes_AsWritableUString(__pyx_v_encoded); if (unlikely((!__pyx_t_8) && PyErr_Occurred())) __PYX_ERR(0, 194, __pyx_L1_error)
   __pyx_v_encodedptr = ((unsigned char *)__pyx_t_8);
 
-  /* "compressed_segmentation.pyx":194
+  /* "compressed_segmentation.pyx":195
  * 
  *   cdef unsigned char *encodedptr = <unsigned char*>encoded
  *   cdef uint32_t* uintencodedptr = <uint32_t*>encodedptr;             # <<<<<<<<<<<<<<
@@ -4314,27 +4314,27 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
   __pyx_v_uintencodedptr = ((uint32_t *)__pyx_v_encodedptr);
 
-  /* "compressed_segmentation.pyx":195
+  /* "compressed_segmentation.pyx":196
  *   cdef unsigned char *encodedptr = <unsigned char*>encoded
  *   cdef uint32_t* uintencodedptr = <uint32_t*>encodedptr;
  *   cdef ptrdiff_t[4] volsize = decode_shape             # <<<<<<<<<<<<<<
  *   cdef ptrdiff_t[3] blksize = block_size
  *   cdef ptrdiff_t[4] strides = [
  */
-  if (unlikely(__Pyx_carray_from_py_ptrdiff_t(__pyx_v_decode_shape, __pyx_t_9, 4) < 0)) __PYX_ERR(0, 195, __pyx_L1_error)
+  if (unlikely(__Pyx_carray_from_py_ptrdiff_t(__pyx_v_decode_shape, __pyx_t_9, 4) < 0)) __PYX_ERR(0, 196, __pyx_L1_error)
   memcpy(&(__pyx_v_volsize[0]), __pyx_t_9, sizeof(__pyx_v_volsize[0]) * (4));
 
-  /* "compressed_segmentation.pyx":196
+  /* "compressed_segmentation.pyx":197
  *   cdef uint32_t* uintencodedptr = <uint32_t*>encodedptr;
  *   cdef ptrdiff_t[4] volsize = decode_shape
  *   cdef ptrdiff_t[3] blksize = block_size             # <<<<<<<<<<<<<<
  *   cdef ptrdiff_t[4] strides = [
  *     1,
  */
-  if (unlikely(__Pyx_carray_from_py_ptrdiff_t(__pyx_v_block_size, __pyx_t_10, 3) < 0)) __PYX_ERR(0, 196, __pyx_L1_error)
+  if (unlikely(__Pyx_carray_from_py_ptrdiff_t(__pyx_v_block_size, __pyx_t_10, 3) < 0)) __PYX_ERR(0, 197, __pyx_L1_error)
   memcpy(&(__pyx_v_blksize[0]), __pyx_t_10, sizeof(__pyx_v_blksize[0]) * (3));
 
-  /* "compressed_segmentation.pyx":197
+  /* "compressed_segmentation.pyx":198
  *   cdef ptrdiff_t[4] volsize = decode_shape
  *   cdef ptrdiff_t[3] blksize = block_size
  *   cdef ptrdiff_t[4] strides = [             # <<<<<<<<<<<<<<
@@ -4347,27 +4347,27 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
   __pyx_t_11[3] = (((__pyx_v_volsize[0]) * (__pyx_v_volsize[1])) * (__pyx_v_volsize[2]));
   memcpy(&(__pyx_v_strides[0]), __pyx_t_11, sizeof(__pyx_v_strides[0]) * (4));
 
-  /* "compressed_segmentation.pyx":204
+  /* "compressed_segmentation.pyx":205
  *   ]
  * 
- *   if order == 'F':             # <<<<<<<<<<<<<<
+ *   if order == 'C':             # <<<<<<<<<<<<<<
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]
  *     strides[1] = volsize[2] * volsize[3]
  */
-  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_order, __pyx_n_u_F, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 204, __pyx_L1_error)
+  __pyx_t_6 = (__Pyx_PyUnicode_Equals(__pyx_v_order, __pyx_n_u_C, Py_EQ)); if (unlikely(__pyx_t_6 < 0)) __PYX_ERR(0, 205, __pyx_L1_error)
   if (__pyx_t_6) {
 
-    /* "compressed_segmentation.pyx":205
+    /* "compressed_segmentation.pyx":206
  * 
- *   if order == 'F':
+ *   if order == 'C':
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]             # <<<<<<<<<<<<<<
  *     strides[1] = volsize[2] * volsize[3]
  *     strides[2] = volsize[3]
  */
     (__pyx_v_strides[0]) = (((__pyx_v_volsize[1]) * (__pyx_v_volsize[2])) * (__pyx_v_volsize[3]));
 
-    /* "compressed_segmentation.pyx":206
- *   if order == 'F':
+    /* "compressed_segmentation.pyx":207
+ *   if order == 'C':
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]
  *     strides[1] = volsize[2] * volsize[3]             # <<<<<<<<<<<<<<
  *     strides[2] = volsize[3]
@@ -4375,7 +4375,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
     (__pyx_v_strides[1]) = ((__pyx_v_volsize[2]) * (__pyx_v_volsize[3]));
 
-    /* "compressed_segmentation.pyx":207
+    /* "compressed_segmentation.pyx":208
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]
  *     strides[1] = volsize[2] * volsize[3]
  *     strides[2] = volsize[3]             # <<<<<<<<<<<<<<
@@ -4384,7 +4384,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
     (__pyx_v_strides[2]) = (__pyx_v_volsize[3]);
 
-    /* "compressed_segmentation.pyx":208
+    /* "compressed_segmentation.pyx":209
  *     strides[1] = volsize[2] * volsize[3]
  *     strides[2] = volsize[3]
  *     strides[3] = 1             # <<<<<<<<<<<<<<
@@ -4393,16 +4393,16 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
     (__pyx_v_strides[3]) = 1;
 
-    /* "compressed_segmentation.pyx":204
+    /* "compressed_segmentation.pyx":205
  *   ]
  * 
- *   if order == 'F':             # <<<<<<<<<<<<<<
+ *   if order == 'C':             # <<<<<<<<<<<<<<
  *     strides[0] = volsize[1] * volsize[2] * volsize[3]
  *     strides[1] = volsize[2] * volsize[3]
  */
   }
 
-  /* "compressed_segmentation.pyx":210
+  /* "compressed_segmentation.pyx":211
  *     strides[3] = 1
  * 
  *   cdef vector[uint64_t] *output = new vector[uint64_t]()             # <<<<<<<<<<<<<<
@@ -4413,11 +4413,11 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
     __pyx_t_12 = new std::vector<uint64_t> ();
   } catch(...) {
     __Pyx_CppExn2PyErr();
-    __PYX_ERR(0, 210, __pyx_L1_error)
+    __PYX_ERR(0, 211, __pyx_L1_error)
   }
   __pyx_v_output = __pyx_t_12;
 
-  /* "compressed_segmentation.pyx":212
+  /* "compressed_segmentation.pyx":213
  *   cdef vector[uint64_t] *output = new vector[uint64_t]()
  * 
  *   DecompressChannels[uint64_t](             # <<<<<<<<<<<<<<
@@ -4426,7 +4426,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
   compress_segmentation::DecompressChannels<uint64_t>(__pyx_v_uintencodedptr, __pyx_v_volsize, __pyx_v_blksize, __pyx_v_strides, ((std::vector<uint64_t>  *)__pyx_v_output));
 
-  /* "compressed_segmentation.pyx":220
+  /* "compressed_segmentation.pyx":221
  *   )
  * 
  *   cdef uint64_t* output_ptr = <uint64_t*>&output[0][0]             # <<<<<<<<<<<<<<
@@ -4435,7 +4435,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
   __pyx_v_output_ptr = ((uint64_t *)(&((__pyx_v_output[0])[0])));
 
-  /* "compressed_segmentation.pyx":221
+  /* "compressed_segmentation.pyx":222
  * 
  *   cdef uint64_t* output_ptr = <uint64_t*>&output[0][0]
  *   cdef uint64_t[:] vec_view = <uint64_t[:output.size()]>output_ptr             # <<<<<<<<<<<<<<
@@ -4444,85 +4444,85 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
  */
   if (!__pyx_v_output_ptr) {
     PyErr_SetString(PyExc_ValueError,"Cannot create cython.array from NULL pointer");
-    __PYX_ERR(0, 221, __pyx_L1_error)
+    __PYX_ERR(0, 222, __pyx_L1_error)
   }
-  __pyx_t_2 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn_uint64_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_2 = __pyx_format_from_typeinfo(&__Pyx_TypeInfo_nn_uint64_t); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_output->size())); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_1 = Py_BuildValue((char*) "("  __PYX_BUILD_PY_SSIZE_T  ")", ((Py_ssize_t)__pyx_v_output->size())); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_t_13 = __pyx_array_new(__pyx_t_1, sizeof(uint64_t), PyBytes_AS_STRING(__pyx_t_2), (char *) "c", (char *) __pyx_v_output_ptr);
-  if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 221, __pyx_L1_error)
+  if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_13);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn_uint64_t(((PyObject *)__pyx_t_13), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 221, __pyx_L1_error)
+  __pyx_t_14 = __Pyx_PyObject_to_MemoryviewSlice_ds_nn_uint64_t(((PyObject *)__pyx_t_13), PyBUF_WRITABLE); if (unlikely(!__pyx_t_14.memview)) __PYX_ERR(0, 222, __pyx_L1_error)
   __Pyx_DECREF(((PyObject *)__pyx_t_13)); __pyx_t_13 = 0;
   __pyx_v_vec_view = __pyx_t_14;
   __pyx_t_14.memview = NULL;
   __pyx_t_14.data = NULL;
 
-  /* "compressed_segmentation.pyx":230
+  /* "compressed_segmentation.pyx":231
  *   # This construct is required by python 2.
  *   # Python 3 can just do np.frombuffer(vec_view, ...)
  *   buf = bytearray(vec_view[:])             # <<<<<<<<<<<<<<
  *   del output
- *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
+ *   # new_order = 'C' if order == 'F' else 'F'
  */
-  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_vec_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_uint64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_uint64_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 230, __pyx_L1_error)
+  __pyx_t_2 = __pyx_memoryview_fromslice(__pyx_v_vec_view, 1, (PyObject *(*)(char *)) __pyx_memview_get_nn_uint64_t, (int (*)(char *, PyObject *)) __pyx_memview_set_nn_uint64_t, 0);; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 230, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_CallOneArg(((PyObject *)(&PyByteArray_Type)), __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 231, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_buf = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "compressed_segmentation.pyx":231
+  /* "compressed_segmentation.pyx":232
  *   # Python 3 can just do np.frombuffer(vec_view, ...)
  *   buf = bytearray(vec_view[:])
  *   del output             # <<<<<<<<<<<<<<
+ *   # new_order = 'C' if order == 'F' else 'F'
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
- * 
  */
   delete __pyx_v_output;
 
-  /* "compressed_segmentation.pyx":232
- *   buf = bytearray(vec_view[:])
+  /* "compressed_segmentation.pyx":234
  *   del output
+ *   # new_order = 'C' if order == 'F' else 'F'
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )             # <<<<<<<<<<<<<<
  * 
  * def decompress(
  */
   __Pyx_XDECREF(__pyx_r);
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_frombuffer); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_frombuffer); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_buf);
   __Pyx_GIVEREF(__pyx_v_buf);
   PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_buf);
-  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 232, __pyx_L1_error)
-  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 232, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_dtype, __pyx_v_dtype) < 0) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_1, __pyx_t_5); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_reshape); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_7, __pyx_n_s_reshape); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __pyx_t_7 = PyTuple_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_INCREF(__pyx_v_volume_size);
   __Pyx_GIVEREF(__pyx_v_volume_size);
   PyTuple_SET_ITEM(__pyx_t_7, 0, __pyx_v_volume_size);
-  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 232, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_v_order) < 0) __PYX_ERR(0, 232, __pyx_L1_error)
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 232, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_order, __pyx_v_order) < 0) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_7, __pyx_t_1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 234, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -4531,7 +4531,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "compressed_segmentation.pyx":181
+  /* "compressed_segmentation.pyx":182
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
  * 
  * cdef decompress_helper64(             # <<<<<<<<<<<<<<
@@ -4559,7 +4559,7 @@ static PyObject *__pyx_f_23compressed_segmentation_decompress_helper64(PyObject 
   return __pyx_r;
 }
 
-/* "compressed_segmentation.pyx":234
+/* "compressed_segmentation.pyx":236
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
  * 
  * def decompress(             # <<<<<<<<<<<<<<
@@ -4614,13 +4614,13 @@ static PyObject *__pyx_pw_23compressed_segmentation_3decompress(PyObject *__pyx_
         case  1:
         if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_volume_size)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("decompress", 0, 3, 5, 1); __PYX_ERR(0, 234, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("decompress", 0, 3, 5, 1); __PYX_ERR(0, 236, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  2:
         if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_dtype)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("decompress", 0, 3, 5, 2); __PYX_ERR(0, 234, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("decompress", 0, 3, 5, 2); __PYX_ERR(0, 236, __pyx_L3_error)
         }
         CYTHON_FALLTHROUGH;
         case  3:
@@ -4636,7 +4636,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_3decompress(PyObject *__pyx_
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decompress") < 0)) __PYX_ERR(0, 234, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "decompress") < 0)) __PYX_ERR(0, 236, __pyx_L3_error)
       }
     } else {
       switch (PyTuple_GET_SIZE(__pyx_args)) {
@@ -4659,13 +4659,13 @@ static PyObject *__pyx_pw_23compressed_segmentation_3decompress(PyObject *__pyx_
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("decompress", 0, 3, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 234, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("decompress", 0, 3, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 236, __pyx_L3_error)
   __pyx_L3_error:;
   __Pyx_AddTraceback("compressed_segmentation.decompress", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_encoded), (&PyBytes_Type), 1, "encoded", 1))) __PYX_ERR(0, 235, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_encoded), (&PyBytes_Type), 1, "encoded", 1))) __PYX_ERR(0, 237, __pyx_L1_error)
   __pyx_r = __pyx_pf_23compressed_segmentation_2decompress(__pyx_self, __pyx_v_encoded, __pyx_v_volume_size, __pyx_v_dtype, __pyx_v_block_size, __pyx_v_order);
 
   /* function exit code */
@@ -4692,16 +4692,16 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
   __Pyx_RefNannySetupContext("decompress", 0);
   __Pyx_INCREF(__pyx_v_dtype);
 
-  /* "compressed_segmentation.pyx":254
+  /* "compressed_segmentation.pyx":256
  *   Returns: 3D or 4D numpy array
  *   """
  *   dtype = np.dtype(dtype)             # <<<<<<<<<<<<<<
  *   if dtype == np.uint32:
  *     return decompress_helper32(encoded, volume_size, dtype, order, block_size)
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_2, __pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 254, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_dtype); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -4716,31 +4716,31 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
   }
   __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_v_dtype) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_dtype);
   __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 254, __pyx_L1_error)
+  if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF_SET(__pyx_v_dtype, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "compressed_segmentation.pyx":255
+  /* "compressed_segmentation.pyx":257
  *   """
  *   dtype = np.dtype(dtype)
  *   if dtype == np.uint32:             # <<<<<<<<<<<<<<
  *     return decompress_helper32(encoded, volume_size, dtype, order, block_size)
  *   elif dtype == np.uint64:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_uint32); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 255, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_uint32); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_dtype, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 255, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_dtype, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 255, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 257, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (__pyx_t_4) {
 
-    /* "compressed_segmentation.pyx":256
+    /* "compressed_segmentation.pyx":258
  *   dtype = np.dtype(dtype)
  *   if dtype == np.uint32:
  *     return decompress_helper32(encoded, volume_size, dtype, order, block_size)             # <<<<<<<<<<<<<<
@@ -4750,13 +4750,13 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_5.__pyx_n = 1;
     __pyx_t_5.block_size = __pyx_v_block_size;
-    __pyx_t_1 = __pyx_f_23compressed_segmentation_decompress_helper32(__pyx_v_encoded, __pyx_v_volume_size, __pyx_v_dtype, __pyx_v_order, &__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 256, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_23compressed_segmentation_decompress_helper32(__pyx_v_encoded, __pyx_v_volume_size, __pyx_v_dtype, __pyx_v_order, &__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "compressed_segmentation.pyx":255
+    /* "compressed_segmentation.pyx":257
  *   """
  *   dtype = np.dtype(dtype)
  *   if dtype == np.uint32:             # <<<<<<<<<<<<<<
@@ -4765,25 +4765,25 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
  */
   }
 
-  /* "compressed_segmentation.pyx":257
+  /* "compressed_segmentation.pyx":259
  *   if dtype == np.uint32:
  *     return decompress_helper32(encoded, volume_size, dtype, order, block_size)
  *   elif dtype == np.uint64:             # <<<<<<<<<<<<<<
  *     return decompress_helper64(encoded, volume_size, dtype, order, block_size)
  *   else:
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_uint64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_uint64); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyObject_RichCompare(__pyx_v_dtype, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_1 = PyObject_RichCompare(__pyx_v_dtype, __pyx_t_3, Py_EQ); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 257, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 259, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(__pyx_t_4)) {
 
-    /* "compressed_segmentation.pyx":258
+    /* "compressed_segmentation.pyx":260
  *     return decompress_helper32(encoded, volume_size, dtype, order, block_size)
  *   elif dtype == np.uint64:
  *     return decompress_helper64(encoded, volume_size, dtype, order, block_size)             # <<<<<<<<<<<<<<
@@ -4793,13 +4793,13 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
     __Pyx_XDECREF(__pyx_r);
     __pyx_t_6.__pyx_n = 1;
     __pyx_t_6.block_size = __pyx_v_block_size;
-    __pyx_t_1 = __pyx_f_23compressed_segmentation_decompress_helper64(__pyx_v_encoded, __pyx_v_volume_size, __pyx_v_dtype, __pyx_v_order, &__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 258, __pyx_L1_error)
+    __pyx_t_1 = __pyx_f_23compressed_segmentation_decompress_helper64(__pyx_v_encoded, __pyx_v_volume_size, __pyx_v_dtype, __pyx_v_order, &__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __pyx_r = __pyx_t_1;
     __pyx_t_1 = 0;
     goto __pyx_L0;
 
-    /* "compressed_segmentation.pyx":257
+    /* "compressed_segmentation.pyx":259
  *   if dtype == np.uint32:
  *     return decompress_helper32(encoded, volume_size, dtype, order, block_size)
  *   elif dtype == np.uint64:             # <<<<<<<<<<<<<<
@@ -4808,7 +4808,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
  */
   }
 
-  /* "compressed_segmentation.pyx":260
+  /* "compressed_segmentation.pyx":262
  *     return decompress_helper64(encoded, volume_size, dtype, order, block_size)
  *   else:
  *     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))             # <<<<<<<<<<<<<<
@@ -4816,7 +4816,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
  * 
  */
   /*else*/ {
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_dtype_must_be_one_of_uint32_or_u, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 260, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_kp_u_dtype_must_be_one_of_uint32_or_u, __pyx_n_s_format); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 262, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __pyx_t_2 = NULL;
     if (CYTHON_UNPACK_METHODS && likely(PyMethod_Check(__pyx_t_3))) {
@@ -4830,18 +4830,18 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
     }
     __pyx_t_1 = (__pyx_t_2) ? __Pyx_PyObject_Call2Args(__pyx_t_3, __pyx_t_2, __pyx_v_dtype) : __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_v_dtype);
     __Pyx_XDECREF(__pyx_t_2); __pyx_t_2 = 0;
-    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 260, __pyx_L1_error)
+    if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 262, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 260, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_TypeError, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 262, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __Pyx_Raise(__pyx_t_3, 0, 0, 0);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-    __PYX_ERR(0, 260, __pyx_L1_error)
+    __PYX_ERR(0, 262, __pyx_L1_error)
   }
 
-  /* "compressed_segmentation.pyx":234
+  /* "compressed_segmentation.pyx":236
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
  * 
  * def decompress(             # <<<<<<<<<<<<<<
@@ -20952,7 +20952,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
 static CYTHON_SMALL_CODE int __Pyx_InitCachedBuiltins(void) {
   __pyx_builtin_OverflowError = __Pyx_GetBuiltinName(__pyx_n_s_OverflowError); if (!__pyx_builtin_OverflowError) __PYX_ERR(0, 121, __pyx_L1_error)
   __pyx_builtin_any = __Pyx_GetBuiltinName(__pyx_n_s_any); if (!__pyx_builtin_any) __PYX_ERR(0, 138, __pyx_L1_error)
-  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 260, __pyx_L1_error)
+  __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(0, 262, __pyx_L1_error)
   __pyx_builtin_MemoryError = __Pyx_GetBuiltinName(__pyx_n_s_MemoryError); if (!__pyx_builtin_MemoryError) __PYX_ERR(1, 109, __pyx_L1_error)
   __pyx_builtin_ImportError = __Pyx_GetBuiltinName(__pyx_n_s_ImportError); if (!__pyx_builtin_ImportError) __PYX_ERR(2, 884, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(3, 84, __pyx_L1_error)
@@ -21254,17 +21254,17 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__36);
   __pyx_codeobj__37 = (PyObject*)__Pyx_PyCode_New(3, 0, 13, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__36, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_compressed_segmentation_pyx, __pyx_n_s_compress, 49, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__37)) __PYX_ERR(0, 49, __pyx_L1_error)
 
-  /* "compressed_segmentation.pyx":234
+  /* "compressed_segmentation.pyx":236
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
  * 
  * def decompress(             # <<<<<<<<<<<<<<
  *     bytes encoded, volume_size, dtype,
  *     block_size=DEFAULT_BLOCK_SIZE, order='C'
  */
-  __pyx_tuple__38 = PyTuple_Pack(5, __pyx_n_s_encoded, __pyx_n_s_volume_size, __pyx_n_s_dtype, __pyx_n_s_block_size, __pyx_n_s_order); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_tuple__38 = PyTuple_Pack(5, __pyx_n_s_encoded, __pyx_n_s_volume_size, __pyx_n_s_dtype, __pyx_n_s_block_size, __pyx_n_s_order); if (unlikely(!__pyx_tuple__38)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__38);
   __Pyx_GIVEREF(__pyx_tuple__38);
-  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_compressed_segmentation_pyx, __pyx_n_s_decompress, 234, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_codeobj__39 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__38, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_compressed_segmentation_pyx, __pyx_n_s_decompress, 236, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__39)) __PYX_ERR(0, 236, __pyx_L1_error)
 
   /* "View.MemoryView":286
  *         return self.name
@@ -21802,42 +21802,42 @@ if (!__Pyx_RefNanny) {
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "compressed_segmentation.pyx":183
+  /* "compressed_segmentation.pyx":184
  * cdef decompress_helper64(
  *     bytes encoded, volume_size, dtype, order,
  *     block_size=DEFAULT_BLOCK_SIZE             # <<<<<<<<<<<<<<
  *   ):
  * 
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_DEFAULT_BLOCK_SIZE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 183, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_DEFAULT_BLOCK_SIZE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 184, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_k__9 = __pyx_t_1;
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "compressed_segmentation.pyx":236
+  /* "compressed_segmentation.pyx":238
  * def decompress(
  *     bytes encoded, volume_size, dtype,
  *     block_size=DEFAULT_BLOCK_SIZE, order='C'             # <<<<<<<<<<<<<<
  *   ):
  *   """
  */
-  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_DEFAULT_BLOCK_SIZE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
+  __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_DEFAULT_BLOCK_SIZE); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 238, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_k__10 = __pyx_t_1;
   __Pyx_GIVEREF(__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "compressed_segmentation.pyx":234
+  /* "compressed_segmentation.pyx":236
  *   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
  * 
  * def decompress(             # <<<<<<<<<<<<<<
  *     bytes encoded, volume_size, dtype,
  *     block_size=DEFAULT_BLOCK_SIZE, order='C'
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_23compressed_segmentation_3decompress, NULL, __pyx_n_s_compressed_segmentation); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 234, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_23compressed_segmentation_3decompress, NULL, __pyx_n_s_compressed_segmentation); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decompress, __pyx_t_1) < 0) __PYX_ERR(0, 234, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_decompress, __pyx_t_1) < 0) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "compressed_segmentation.pyx":1
