@@ -27,6 +27,11 @@ setuptools.setup(
   ],
   long_description_content_type="text/markdown",
   pbr=True,
+  entry_points={
+    "console_scripts": [
+      "cseg=cseg_cli:main"
+    ],
+  },
 )
 
 
