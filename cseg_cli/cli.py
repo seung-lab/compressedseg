@@ -53,14 +53,16 @@ def compress(source, block_size):
 @click.option('--volume-size', required=True, type=Tuple3(), help="Dimensions of the volume.", show_default=True)
 @click.option('--block-size', type=Tuple3(), default="8,8,8", help="Compression step size. No effect on decompression.", show_default=True)
 @click.option('--bytes', required=True, type=int, help="Number of bytes per voxel. 4 or 8.", show_default=True)
+@click.option('--order', default="C", help="C or Fortran ordering (C or F)", show_default=True)
 @click.argument("source", nargs=-1)
-def decompress(source, volume_size, block_size, bytes):
+def decompress(source, volume_size, block_size, bytes, order):
 	"""
 	Decompress a cseg file. The dimensions, dtype, and
 	block size must be known from information outside
 	the file.
 	"""
 	assert bytes in (4,8)
+	assert order in ('C','F')
 
 	dtype = np.uint32 if bytes == 4 else np.uint64
 
@@ -69,14 +71,15 @@ def decompress(source, volume_size, block_size, bytes):
 			source = source[:i] + sys.stdin.readlines() + source[i+1:]
 
 	for src in source:
-		decompress_file(src, volume_size, block_size, dtype)
+		decompress_file(src, volume_size, block_size, dtype, order)
 
-def decompress_file(src, volume_size, block_size, dtype):
+def decompress_file(src, volume_size, block_size, dtype, order):
 	with open(src, "rb") as f:
 		binary = f.read()
 
 	data = compressed_segmentation.decompress(
-		binary, volume_size, dtype, block_size
+		binary, volume_size, dtype, 
+		block_size, order
 	)
 	del binary
 
