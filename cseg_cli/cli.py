@@ -20,11 +20,8 @@ class Tuple3(click.ParamType):
     return value
   
 
-@click.command()
-@click.option("-c/-d", "--compress/--decompress", default=True, is_flag=True, help="Compress a numpy file to a cseg file or decompress to a numpy .npy file.", show_default=True)
-@click.option('--block-size', type=Tuple3(), default="8,8,8", help="Compression step size. No effect on decompression.", show_default=True)
-@click.argument("source", nargs=-1)
-def main(compress, source, block_size):
+@click.group()
+def main():
 	"""
 	Compress and decompress compressed_segmentation .cseg files
 	from and to numpy .npy files.
@@ -38,26 +35,49 @@ def main(compress, source, block_size):
 	at Google. The decoder is by Stephen Plaza formerly of Janelia
 	Farm Research Center's FlyEM project.
 	"""
+	pass
+
+@main.command()
+@click.option('--block-size', type=Tuple3(), default="8,8,8", help="Compression block size.", show_default=True)
+@click.argument("source", nargs=-1)
+def compress(source, block_size):
+	"""Compress a numpy file to a cseg file."""
 	for i in range(len(source)):
 		if source[i] == "-":
 			source = source[:i] + sys.stdin.readlines() + source[i+1:]
 	
 	for src in source:
-		if compress:
-			compress_file(src, steps, six)
-		else:
-			decompress_file(src)
+			compress_file(src, block_size)
 
-def decompress_file(src):
+@main.command()
+@click.option('--volume-size', required=True, type=Tuple3(), help="Dimensions of the volume.", show_default=True)
+@click.option('--block-size', type=Tuple3(), default="8,8,8", help="Compression step size. No effect on decompression.", show_default=True)
+@click.option('--bytes', required=True, type=int, help="Number of bytes per voxel. 4 or 8.", show_default=True)
+@click.argument("source", nargs=-1)
+def decompress(source, volume_size, block_size, bytes):
+	"""
+	Decompress a cseg file. The dimensions, dtype, and
+	block size must be known from information outside
+	the file.
+	"""
+	assert bytes in (4,8)
+
+	dtype = np.uint32 if bytes == 4 else np.uint64
+
+	for i in range(len(source)):
+		if source[i] == "-":
+			source = source[:i] + sys.stdin.readlines() + source[i+1:]
+
+	for src in source:
+		decompress_file(src, volume_size, block_size, dtype)
+
+def decompress_file(src, volume_size, block_size, dtype):
 	with open(src, "rb") as f:
 		binary = f.read()
 
-	try:
-		data = compressed_segmentation.decompress(binary)
-	except compresso.DecodeError:
-		print(f"cseg: {src} could not be decoded.")
-		sys.exit()
-
+	data = compressed_segmentation.decompress(
+		binary, volume_size, dtype, block_size
+	)
 	del binary
 
 	dest = src.replace(".cseg", "")
