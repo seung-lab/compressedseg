@@ -1,6 +1,15 @@
 CHANGES
 =======
 
+* build: remove appveyor
+* test: oldest-supported-numpy
+* tests: run GHA on PRs
+* tests: add GHA tests
+* build: use GHA
+* refactor: figured out how to unify 32 and 64 bit functions w/ dummy var
+* chore: add changelog
+* docs: pretty up header
+
 2.0.1
 -----
 
