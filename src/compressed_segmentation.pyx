@@ -26,6 +26,10 @@ from libcpp.vector cimport vector
 cimport numpy as cnp
 import numpy as np
 
+ctypedef fused UINT:
+  uint32_t
+  uint64_t
+
 cdef extern from "compress_segmentation.h" namespace "compress_segmentation":
   cdef int CompressChannels[Label](
     Label* input, 
@@ -130,59 +134,12 @@ def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
   del output
   return bytestrout
 
-cdef decompress_helper32(
-    bytes encoded, volume_size, dtype, order, 
-    block_size=DEFAULT_BLOCK_SIZE
-  ):
-
-  if any([ sz == 0 for sz in volume_size ]):
-    return np.zeros(volume_size, dtype=dtype, order=order)
-
-  decode_shape = volume_size
-  if len(decode_shape) == 3:
-    decode_shape = (volume_size[0], volume_size[1], volume_size[2], 1)
-
-  cdef unsigned char *encodedptr = <unsigned char*>encoded
-  cdef uint32_t* uintencodedptr = <uint32_t*>encodedptr;
-  cdef ptrdiff_t[4] volsize = decode_shape
-  cdef ptrdiff_t[3] blksize = block_size
-  cdef ptrdiff_t[4] strides = [ 
-    1, 
-    volsize[0], 
-    volsize[0] * volsize[1], 
-    volsize[0] * volsize[1] * volsize[2] 
-  ]
-
-  if order == 'C':
-    strides[0] = volsize[1] * volsize[2] * volsize[3]
-    strides[1] = volsize[2] * volsize[3]
-    strides[2] = volsize[3]
-    strides[3] = 1
-
-  cdef vector[uint32_t] *output = new vector[uint32_t]()
-
-  DecompressChannels[uint32_t](
-    uintencodedptr,
-    volsize,
-    blksize,
-    strides,
-    output
-  )
-  
-  cdef uint32_t* output_ptr = <uint32_t*>&output[0][0]
-  cdef uint32_t[:] vec_view = <uint32_t[:output.size()]>output_ptr
-
-  # This construct is required by python 2.
-  # Python 3 can just do np.frombuffer(vec_view, ...)
-  buf = bytearray(vec_view[:])
-  del output
-  return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
-
-cdef decompress_helper64(
-    bytes encoded, volume_size, dtype, order, 
-    block_size=DEFAULT_BLOCK_SIZE
+cdef decompress_helper(
+    bytes encoded, volume_size, order, 
+    block_size=DEFAULT_BLOCK_SIZE, UINT dummy_dtype = 0
   ):
   
+  dtype = np.uint32 if sizeof(UINT) == 4 else np.uint64
   if any([ sz == 0 for sz in volume_size ]):
     return np.zeros(volume_size, dtype=dtype, order=order)
   
@@ -207,9 +164,9 @@ cdef decompress_helper64(
     strides[2] = volsize[3]
     strides[3] = 1
 
-  cdef vector[uint64_t] *output = new vector[uint64_t]()
+  cdef vector[UINT] *output = new vector[UINT]()
 
-  DecompressChannels[uint64_t](
+  DecompressChannels(
     uintencodedptr,
     volsize,
     blksize,
@@ -217,8 +174,8 @@ cdef decompress_helper64(
     output
   )
   
-  cdef uint64_t* output_ptr = <uint64_t*>&output[0][0]
-  cdef uint64_t[:] vec_view = <uint64_t[:output.size()]>output_ptr
+  cdef UINT* output_ptr = <UINT*>&output[0][0]
+  cdef UINT[:] vec_view = <UINT[:output.size()]>output_ptr
 
   # possible double free issue
   # The buffer gets loaded into numpy, but not the vector<uint64_t>
@@ -253,9 +210,9 @@ def decompress(
   """
   dtype = np.dtype(dtype)
   if dtype == np.uint32:
-    return decompress_helper32(encoded, volume_size, dtype, order, block_size)
+    return decompress_helper(encoded, volume_size, order, block_size, <uint32_t>0)
   elif dtype == np.uint64:
-    return decompress_helper64(encoded, volume_size, dtype, order, block_size)
+    return decompress_helper(encoded, volume_size, order, block_size, <uint64_t>0)
   else:
     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
 
