@@ -226,6 +226,9 @@ def labels(
   volume_size = np.array(volume_size)
   block_size = np.array(block_size)
 
+  if any(volume_size == 0):
+    return np.zeros((0,), dtype=dtype)
+
   grid_size = np.ceil(volume_size / block_size).astype(np.uint64)
   cdef size_t num_headers = reduce(operator.mul, grid_size)
   cdef size_t header_bytes = 8 * num_headers
