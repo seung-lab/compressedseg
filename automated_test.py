@@ -63,6 +63,30 @@ def test_recover_random(dtype, order, block_size, variation):
 
 @pytest.mark.parametrize('dtype', (np.uint32, np.uint64))
 @pytest.mark.parametrize('order', ("C", "F"))
+@pytest.mark.parametrize('variation', (1,2,4,8,16,32,64,128,256,512,1024))
+@pytest.mark.parametrize('block_size', [ (2,2,2), (4,4,4), (8,8,8) ])
+def test_labels(dtype, order, variation, block_size):
+
+  for _ in range(3):
+    sx = random.randint(0, 256)
+    sy = random.randint(0, 256)
+    sz = random.randint(0, 128)
+
+    labels = np.random.randint(variation, size=(sx, sy, sz), dtype=dtype)
+    labels = np.copy(labels, order=order)
+    compressed = cseg.compress(labels, block_size=block_size, order=order)
+
+    uniq = np.unique(labels)
+    uniql = cseg.labels(
+        compressed, 
+        volume_size=(sx,sy,sz), 
+        dtype=dtype,
+        block_size=block_size,
+    )
+    assert np.all(uniq == uniql)
+
+@pytest.mark.parametrize('dtype', (np.uint32, np.uint64))
+@pytest.mark.parametrize('order', ("C", "F"))
 def test_table_offset_error_random(dtype, order):
     sx = 300
     sy = 300
