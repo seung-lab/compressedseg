@@ -16,14 +16,16 @@ Date: July 2018 - September 2020
 
 from libc.stdio cimport FILE, fopen, fwrite, fclose
 from libc.stdlib cimport calloc, free
-from libc.stdint cimport uint32_t, uint64_t
+from libc.stdint cimport uint8_t, uint32_t, uint64_t, int64_t
 from cpython cimport array
 import array
 import sys
+import operator
+from functools import reduce
 
 from libcpp.vector cimport vector
 
-cimport numpy as cnp
+cimport numpy as np
 import numpy as np
 
 ctypedef fused UINT:
@@ -215,6 +217,90 @@ def decompress(
     return decompress_helper(encoded, volume_size, order, block_size, <uint64_t>0)
   else:
     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
+
+def labels(
+  bytes encoded, volume_size, dtype, 
+  block_size=DEFAULT_BLOCK_SIZE
+):
+  """Extract labels without decompressing."""
+  volume_size = np.array(volume_size)
+  block_size = np.array(block_size)
+
+  grid_size = np.ceil(volume_size / block_size).astype(np.uint64)
+  cdef size_t num_headers = reduce(operator.mul, grid_size)
+  cdef size_t header_bytes = 8 * num_headers
+
+  encoded = encoded[4:] # skip the channel length
+  cdef np.ndarray[uint64_t] headers = np.frombuffer(encoded[:header_bytes], dtype=np.uint64)
+  cdef np.ndarray[uint32_t] data = np.frombuffer(encoded, dtype=np.uint32)
+
+  cdef np.ndarray[uint32_t] offsets = np.zeros((2*num_headers,), dtype=np.uint32)
+
+  cdef size_t i = 0
+  cdef size_t lookup_table_offset = 0
+  cdef size_t encoded_values_offset = 0
+  for i in range(num_headers):
+    lookup_table_offset = headers[i] & 0xffffff
+    encoded_values_offset = headers[i] >> 32
+    offsets[2 * i] = lookup_table_offset
+    offsets[2 * i + 1] = encoded_values_offset
+
+  # use unique rather than simply sort b/c
+  # label offsets can be reused.
+  offsets = np.unique(offsets)
+
+  labels = np.zeros((0,), dtype=dtype)
+
+  cdef size_t dtype_bytes = np.dtype(dtype).itemsize
+  cdef size_t start = 0
+  cdef size_t end = 0
+
+  cdef int64_t idx = 0
+  cdef int64_t size = offsets.size - 1
+
+  cdef np.ndarray[uint32_t, ndim=2] index = np.zeros((num_headers, 2), dtype=np.uint32)
+
+  for i in range(num_headers):
+    lookup_table_offset = headers[i] & 0xffffff
+    idx = _search(offsets, lookup_table_offset)
+    if idx == -1:
+      raise IndexError(f"Unable to locate value: {lookup_table_offset}")
+    elif idx == size:
+      index[i, 0] = offsets[idx]
+      index[i, 1] = data.size
+    else:
+      index[i, 0] = offsets[idx]
+      index[i, 1] = offsets[idx+1]
+
+  labels = np.concatenate([ 
+    data[index[idx,0]:index[idx,1]]
+    for idx in range(num_headers) 
+  ]).view(dtype)
+
+  return np.unique(labels)
+
+cdef int64_t _search(np.ndarray[uint32_t] offsets, uint32_t value):
+  cdef size_t first = 0
+  cdef size_t last = offsets.size - 1
+  cdef size_t middle = (first // 2 + last // 2)
+
+  while (last - first) > 1:
+    if offsets[middle] == value:
+      return middle
+    elif offsets[middle] > value:
+      last = middle
+    else:
+      first = middle
+
+    middle = (first // 2 + last // 2 + ((first & 0b1) + (last & 0b1)) // 2)
+
+  if offsets[first] == value:
+    return first
+
+  if offsets[last] == value:
+    return last
+
+  return -1
 
 
 
