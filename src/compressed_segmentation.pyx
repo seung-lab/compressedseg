@@ -222,7 +222,7 @@ def decompress(
     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
 
 def labels(
-  bytes encoded, volume_size, dtype, 
+  bytes encoded, shape, dtype, 
   block_size=DEFAULT_BLOCK_SIZE
 ):
   """Extract labels without decompressing."""
@@ -233,13 +233,13 @@ def labels(
   if encoded[0] != 1:
     raise DecodeError("This function only handles single channel images.")
 
-  volume_size = np.array(volume_size)
+  shape = np.array(shape)
   block_size = np.array(block_size)
 
-  if any(volume_size == 0):
+  if any(shape == 0):
     return np.zeros((0,), dtype=dtype)
 
-  grid_size = np.ceil(volume_size / block_size).astype(np.uint64)
+  grid_size = np.ceil(shape / block_size).astype(np.uint64)
   cdef size_t num_headers = reduce(operator.mul, grid_size)
   cdef size_t header_bytes = 8 * num_headers
 
@@ -317,29 +317,29 @@ cdef int64_t _search(np.ndarray[uint32_t] offsets, uint32_t value):
 
 class CompressedSegmentationArray:
   def __init__(
-    self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+    self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
   ):
     self.binary = binary
-    self.volume_size = np.array(volume_size, dtype=np.int64)
+    self.shape = np.array(shape, dtype=np.int64)
     self.dtype = np.dtype(dtype)
     self.block_size = np.array(block_size, dtype=np.int64)
     self._labels = None
 
   @property
   def grid_size(self):
-    return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+    return np.ceil(self.shape / self.block_size).astype(np.int64)
 
   def labels(self):
     if self._labels is None:
       self._labels = labels(
-        self.binary, volume_size=self.volume_size,
+        self.binary, shape=self.shape,
         dtype=self.dtype, block_size=self.block_size
       )
     return self._labels
 
   def numpy(self):
     return decompress(
-      self.binary, self.volume_size, 
+      self.binary, self.shape, 
       self.dtype, self.block_size
     )
 

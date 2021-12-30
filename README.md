@@ -17,7 +17,7 @@ recovered = cseg.decompress(
 )
 
 arr = CompressedSegmentationArray(
-    compressed, volume_size=(sx,sy,sz), dtype=dtype
+    compressed, shape=(sx,sy,sz), dtype=dtype
 )
 label = arr[54,32,103] # random access to single voxels w/o decompressing
 uniq_labels = arr.labels() # get all distinct values w/o decompressing

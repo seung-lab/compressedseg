@@ -66,12 +66,12 @@ def test_empty_labels():
     compressed = cseg.compress(labels, block_size=(8,8,8))
 
     try:
-        cseg.labels(b'', block_size=(8,8,8), volume_size=(0,0,0), dtype=np.uint32)
+        cseg.labels(b'', block_size=(8,8,8), shape=(0,0,0), dtype=np.uint32)
         assert False
     except cseg.DecodeError:
         pass
     
-    clabels = cseg.labels(compressed, block_size=(8,8,8), volume_size=(0,0,0), dtype=np.uint32)
+    clabels = cseg.labels(compressed, block_size=(8,8,8), shape=(0,0,0), dtype=np.uint32)
     assert all(clabels == labels)
 
 @pytest.mark.parametrize('dtype', (np.uint32, np.uint64))
@@ -92,7 +92,7 @@ def test_labels(dtype, order, variation, block_size):
     uniq = np.unique(labels)
     uniql = cseg.labels(
         compressed, 
-        volume_size=(sx,sy,sz), 
+        shape=(sx,sy,sz), 
         dtype=dtype,
         block_size=block_size,
     )
@@ -125,4 +125,23 @@ def test_table_offset_error_sequence(dtype, order):
     recovered = cseg.decompress(compressed, (sx, sy, sz), dtype=dtype, order=order)
 
     assert np.all(labels == recovered)
+
+@pytest.mark.parametrize('dtype', (np.uint32, np.uint64))
+@pytest.mark.parametrize('block_size', [ (2,2,2), (4,4,4), (8,8,8) ])
+def test_random_access(dtype, block_size):
+    sx = 100
+    sy = 100
+    sz = 100
+
+    labels = np.random.randint(10000, size=(sx, sy, sz), dtype=dtype)
+    binary = cseg.compress(labels, block_size=block_size)
+    arr = cseg.CompressedSegmentationArray(
+        binary, shape=(sx,sy,sz), dtype=dtype, block_size=block_size
+    )
+
+    for i in range(10):
+        x,y,z = np.random.randint(0, sx, size=(3,), dtype=int)
+        assert arr[x,y,z] == labels[x,y,z]
+
+
 

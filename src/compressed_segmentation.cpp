@@ -3196,9 +3196,9 @@ static PyObject *__pyx_n_s_z;
 static PyObject *__pyx_n_s_zeros;
 static PyObject *__pyx_pf_23compressed_segmentation_compress(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_data, PyObject *__pyx_v_block_size, PyObject *__pyx_v_order); /* proto */
 static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_encoded, PyObject *__pyx_v_volume_size, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size, PyObject *__pyx_v_order); /* proto */
-static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_encoded, PyObject *__pyx_v_volume_size, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size); /* proto */
+static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_encoded, PyObject *__pyx_v_shape, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size); /* proto */
 static PyObject *__pyx_pf_23compressed_segmentation_6__defaults__(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
-static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArray___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_binary, PyObject *__pyx_v_volume_size, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size); /* proto */
+static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArray___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_binary, PyObject *__pyx_v_shape, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size); /* proto */
 static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArray_2grid_size(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArray_4labels(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArray_6numpy(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self); /* proto */
@@ -5341,7 +5341,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_2decompress(CYTHON_UNUSED Py
  *     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
  * 
  * def labels(             # <<<<<<<<<<<<<<
- *   bytes encoded, volume_size, dtype,
+ *   bytes encoded, shape, dtype,
  *   block_size=DEFAULT_BLOCK_SIZE
  */
 
@@ -5351,7 +5351,7 @@ static char __pyx_doc_23compressed_segmentation_4labels[] = "Extract labels with
 static PyMethodDef __pyx_mdef_23compressed_segmentation_5labels = {"labels", (PyCFunction)(void*)(PyCFunctionWithKeywords)__pyx_pw_23compressed_segmentation_5labels, METH_VARARGS|METH_KEYWORDS, __pyx_doc_23compressed_segmentation_4labels};
 static PyObject *__pyx_pw_23compressed_segmentation_5labels(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_encoded = 0;
-  PyObject *__pyx_v_volume_size = 0;
+  PyObject *__pyx_v_shape = 0;
   PyObject *__pyx_v_dtype = 0;
   PyObject *__pyx_v_block_size = 0;
   int __pyx_lineno = 0;
@@ -5361,7 +5361,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_5labels(PyObject *__pyx_self
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("labels (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_encoded,&__pyx_n_s_volume_size,&__pyx_n_s_dtype,&__pyx_n_s_block_size,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_encoded,&__pyx_n_s_shape,&__pyx_n_s_dtype,&__pyx_n_s_block_size,0};
     PyObject* values[4] = {0,0,0,0};
     values[3] = __pyx_k__11;
     if (unlikely(__pyx_kwds)) {
@@ -5386,7 +5386,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_5labels(PyObject *__pyx_self
         else goto __pyx_L5_argtuple_error;
         CYTHON_FALLTHROUGH;
         case  1:
-        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_volume_size)) != 0)) kw_args--;
+        if (likely((values[1] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_shape)) != 0)) kw_args--;
         else {
           __Pyx_RaiseArgtupleInvalid("labels", 0, 3, 4, 1); __PYX_ERR(0, 224, __pyx_L3_error)
         }
@@ -5418,7 +5418,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_5labels(PyObject *__pyx_self
       }
     }
     __pyx_v_encoded = ((PyObject*)values[0]);
-    __pyx_v_volume_size = values[1];
+    __pyx_v_shape = values[1];
     __pyx_v_dtype = values[2];
     __pyx_v_block_size = values[3];
   }
@@ -5431,7 +5431,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_5labels(PyObject *__pyx_self
   return NULL;
   __pyx_L4_argument_unpacking_done:;
   if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_encoded), (&PyBytes_Type), 1, "encoded", 1))) __PYX_ERR(0, 225, __pyx_L1_error)
-  __pyx_r = __pyx_pf_23compressed_segmentation_4labels(__pyx_self, __pyx_v_encoded, __pyx_v_volume_size, __pyx_v_dtype, __pyx_v_block_size);
+  __pyx_r = __pyx_pf_23compressed_segmentation_4labels(__pyx_self, __pyx_v_encoded, __pyx_v_shape, __pyx_v_dtype, __pyx_v_block_size);
 
   /* function exit code */
   goto __pyx_L0;
@@ -5442,7 +5442,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_5labels(PyObject *__pyx_self
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_encoded, PyObject *__pyx_v_volume_size, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size) {
+static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_encoded, PyObject *__pyx_v_shape, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size) {
   PyObject *__pyx_v_grid_size = NULL;
   size_t __pyx_v_num_headers;
   size_t __pyx_v_header_bytes;
@@ -5500,7 +5500,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
   int __pyx_clineno = 0;
   __Pyx_RefNannySetupContext("labels", 0);
   __Pyx_INCREF(__pyx_v_encoded);
-  __Pyx_INCREF(__pyx_v_volume_size);
+  __Pyx_INCREF(__pyx_v_shape);
   __Pyx_INCREF(__pyx_v_block_size);
   __pyx_pybuffer_headers.pybuffer.buf = NULL;
   __pyx_pybuffer_headers.refcount = 0;
@@ -5592,7 +5592,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
  *   if encoded[0] != 1:
  *     raise DecodeError("This function only handles single channel images.")             # <<<<<<<<<<<<<<
  * 
- *   volume_size = np.array(volume_size)
+ *   shape = np.array(shape)
  */
     __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_DecodeError); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 234, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
@@ -5627,7 +5627,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
   /* "compressed_segmentation.pyx":236
  *     raise DecodeError("This function only handles single channel images.")
  * 
- *   volume_size = np.array(volume_size)             # <<<<<<<<<<<<<<
+ *   shape = np.array(shape)             # <<<<<<<<<<<<<<
  *   block_size = np.array(block_size)
  * 
  */
@@ -5646,20 +5646,20 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
       __Pyx_DECREF_SET(__pyx_t_5, function);
     }
   }
-  __pyx_t_4 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_3, __pyx_v_volume_size) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_volume_size);
+  __pyx_t_4 = (__pyx_t_3) ? __Pyx_PyObject_Call2Args(__pyx_t_5, __pyx_t_3, __pyx_v_shape) : __Pyx_PyObject_CallOneArg(__pyx_t_5, __pyx_v_shape);
   __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 236, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __Pyx_DECREF_SET(__pyx_v_volume_size, __pyx_t_4);
+  __Pyx_DECREF_SET(__pyx_v_shape, __pyx_t_4);
   __pyx_t_4 = 0;
 
   /* "compressed_segmentation.pyx":237
  * 
- *   volume_size = np.array(volume_size)
+ *   shape = np.array(shape)
  *   block_size = np.array(block_size)             # <<<<<<<<<<<<<<
  * 
- *   if any(volume_size == 0):
+ *   if any(shape == 0):
  */
   __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_np); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 237, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -5687,11 +5687,11 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
   /* "compressed_segmentation.pyx":239
  *   block_size = np.array(block_size)
  * 
- *   if any(volume_size == 0):             # <<<<<<<<<<<<<<
+ *   if any(shape == 0):             # <<<<<<<<<<<<<<
  *     return np.zeros((0,), dtype=dtype)
  * 
  */
-  __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_volume_size, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyInt_EqObjC(__pyx_v_shape, __pyx_int_0, 0, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 239, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_any, __pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 239, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -5702,10 +5702,10 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
 
     /* "compressed_segmentation.pyx":240
  * 
- *   if any(volume_size == 0):
+ *   if any(shape == 0):
  *     return np.zeros((0,), dtype=dtype)             # <<<<<<<<<<<<<<
  * 
- *   grid_size = np.ceil(volume_size / block_size).astype(np.uint64)
+ *   grid_size = np.ceil(shape / block_size).astype(np.uint64)
  */
     __Pyx_XDECREF(__pyx_r);
     __Pyx_GetModuleGlobalName(__pyx_t_3, __pyx_n_s_np); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 240, __pyx_L1_error)
@@ -5727,7 +5727,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
     /* "compressed_segmentation.pyx":239
  *   block_size = np.array(block_size)
  * 
- *   if any(volume_size == 0):             # <<<<<<<<<<<<<<
+ *   if any(shape == 0):             # <<<<<<<<<<<<<<
  *     return np.zeros((0,), dtype=dtype)
  * 
  */
@@ -5736,7 +5736,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
   /* "compressed_segmentation.pyx":242
  *     return np.zeros((0,), dtype=dtype)
  * 
- *   grid_size = np.ceil(volume_size / block_size).astype(np.uint64)             # <<<<<<<<<<<<<<
+ *   grid_size = np.ceil(shape / block_size).astype(np.uint64)             # <<<<<<<<<<<<<<
  *   cdef size_t num_headers = reduce(operator.mul, grid_size)
  *   cdef size_t header_bytes = 8 * num_headers
  */
@@ -5745,7 +5745,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
   __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_ceil); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_v_volume_size, __pyx_v_block_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyNumber_Divide(__pyx_v_shape, __pyx_v_block_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 242, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __pyx_t_7 = NULL;
   if (CYTHON_UNPACK_METHODS && unlikely(PyMethod_Check(__pyx_t_6))) {
@@ -5792,7 +5792,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
 
   /* "compressed_segmentation.pyx":243
  * 
- *   grid_size = np.ceil(volume_size / block_size).astype(np.uint64)
+ *   grid_size = np.ceil(shape / block_size).astype(np.uint64)
  *   cdef size_t num_headers = reduce(operator.mul, grid_size)             # <<<<<<<<<<<<<<
  *   cdef size_t header_bytes = 8 * num_headers
  * 
@@ -5856,7 +5856,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
   __pyx_v_num_headers = __pyx_t_9;
 
   /* "compressed_segmentation.pyx":244
- *   grid_size = np.ceil(volume_size / block_size).astype(np.uint64)
+ *   grid_size = np.ceil(shape / block_size).astype(np.uint64)
  *   cdef size_t num_headers = reduce(operator.mul, grid_size)
  *   cdef size_t header_bytes = 8 * num_headers             # <<<<<<<<<<<<<<
  * 
@@ -6689,7 +6689,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
  *     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
  * 
  * def labels(             # <<<<<<<<<<<<<<
- *   bytes encoded, volume_size, dtype,
+ *   bytes encoded, shape, dtype,
  *   block_size=DEFAULT_BLOCK_SIZE
  */
 
@@ -6727,7 +6727,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_4labels(CYTHON_UNUSED PyObje
   __Pyx_XDECREF(__pyx_v_labels);
   __Pyx_XDECREF((PyObject *)__pyx_v_index);
   __Pyx_XDECREF(__pyx_v_encoded);
-  __Pyx_XDECREF(__pyx_v_volume_size);
+  __Pyx_XDECREF(__pyx_v_shape);
   __Pyx_XDECREF(__pyx_v_block_size);
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
@@ -7022,7 +7022,7 @@ static int64_t __pyx_f_23compressed_segmentation__search(PyArrayObject *__pyx_v_
  * 
  * class CompressedSegmentationArray:
  *   def __init__(             # <<<<<<<<<<<<<<
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
  *   ):
  */
 
@@ -7071,7 +7071,7 @@ static PyMethodDef __pyx_mdef_23compressed_segmentation_27CompressedSegmentation
 static PyObject *__pyx_pw_23compressed_segmentation_27CompressedSegmentationArray_1__init__(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_self = 0;
   PyObject *__pyx_v_binary = 0;
-  PyObject *__pyx_v_volume_size = 0;
+  PyObject *__pyx_v_shape = 0;
   PyObject *__pyx_v_dtype = 0;
   PyObject *__pyx_v_block_size = 0;
   int __pyx_lineno = 0;
@@ -7081,7 +7081,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_27CompressedSegmentationArra
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__init__ (wrapper)", 0);
   {
-    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_binary,&__pyx_n_s_volume_size,&__pyx_n_s_dtype,&__pyx_n_s_block_size,0};
+    static PyObject **__pyx_pyargnames[] = {&__pyx_n_s_self,&__pyx_n_s_binary,&__pyx_n_s_shape,&__pyx_n_s_dtype,&__pyx_n_s_block_size,0};
     PyObject* values[5] = {0,0,0,0,0};
     __pyx_defaults *__pyx_dynamic_args = __Pyx_CyFunction_Defaults(__pyx_defaults, __pyx_self);
     values[4] = __pyx_dynamic_args->__pyx_arg_block_size;
@@ -7115,7 +7115,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_27CompressedSegmentationArra
         }
         CYTHON_FALLTHROUGH;
         case  2:
-        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_volume_size)) != 0)) kw_args--;
+        if (likely((values[2] = __Pyx_PyDict_GetItemStr(__pyx_kwds, __pyx_n_s_shape)) != 0)) kw_args--;
         else {
           __Pyx_RaiseArgtupleInvalid("__init__", 0, 4, 5, 2); __PYX_ERR(0, 319, __pyx_L3_error)
         }
@@ -7149,7 +7149,7 @@ static PyObject *__pyx_pw_23compressed_segmentation_27CompressedSegmentationArra
     }
     __pyx_v_self = values[0];
     __pyx_v_binary = values[1];
-    __pyx_v_volume_size = values[2];
+    __pyx_v_shape = values[2];
     __pyx_v_dtype = values[3];
     __pyx_v_block_size = values[4];
   }
@@ -7161,14 +7161,14 @@ static PyObject *__pyx_pw_23compressed_segmentation_27CompressedSegmentationArra
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_23compressed_segmentation_27CompressedSegmentationArray___init__(__pyx_self, __pyx_v_self, __pyx_v_binary, __pyx_v_volume_size, __pyx_v_dtype, __pyx_v_block_size);
+  __pyx_r = __pyx_pf_23compressed_segmentation_27CompressedSegmentationArray___init__(__pyx_self, __pyx_v_self, __pyx_v_binary, __pyx_v_shape, __pyx_v_dtype, __pyx_v_block_size);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArray___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_binary, PyObject *__pyx_v_volume_size, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size) {
+static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArray___init__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, PyObject *__pyx_v_binary, PyObject *__pyx_v_shape, PyObject *__pyx_v_dtype, PyObject *__pyx_v_block_size) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -7182,10 +7182,10 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   __Pyx_RefNannySetupContext("__init__", 0);
 
   /* "compressed_segmentation.pyx":322
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
  *   ):
  *     self.binary = binary             # <<<<<<<<<<<<<<
- *     self.volume_size = np.array(volume_size, dtype=np.int64)
+ *     self.shape = np.array(shape, dtype=np.int64)
  *     self.dtype = np.dtype(dtype)
  */
   if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_binary, __pyx_v_binary) < 0) __PYX_ERR(0, 322, __pyx_L1_error)
@@ -7193,7 +7193,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   /* "compressed_segmentation.pyx":323
  *   ):
  *     self.binary = binary
- *     self.volume_size = np.array(volume_size, dtype=np.int64)             # <<<<<<<<<<<<<<
+ *     self.shape = np.array(shape, dtype=np.int64)             # <<<<<<<<<<<<<<
  *     self.dtype = np.dtype(dtype)
  *     self.block_size = np.array(block_size, dtype=np.int64)
  */
@@ -7204,9 +7204,9 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = PyTuple_New(1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 323, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_v_volume_size);
-  __Pyx_GIVEREF(__pyx_v_volume_size);
-  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_volume_size);
+  __Pyx_INCREF(__pyx_v_shape);
+  __Pyx_GIVEREF(__pyx_v_shape);
+  PyTuple_SET_ITEM(__pyx_t_1, 0, __pyx_v_shape);
   __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 323, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 323, __pyx_L1_error)
@@ -7221,12 +7221,12 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_volume_size, __pyx_t_5) < 0) __PYX_ERR(0, 323, __pyx_L1_error)
+  if (__Pyx_PyObject_SetAttrStr(__pyx_v_self, __pyx_n_s_shape, __pyx_t_5) < 0) __PYX_ERR(0, 323, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "compressed_segmentation.pyx":324
  *     self.binary = binary
- *     self.volume_size = np.array(volume_size, dtype=np.int64)
+ *     self.shape = np.array(shape, dtype=np.int64)
  *     self.dtype = np.dtype(dtype)             # <<<<<<<<<<<<<<
  *     self.block_size = np.array(block_size, dtype=np.int64)
  *     self._labels = None
@@ -7237,7 +7237,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
   /* "compressed_segmentation.pyx":325
- *     self.volume_size = np.array(volume_size, dtype=np.int64)
+ *     self.shape = np.array(shape, dtype=np.int64)
  *     self.dtype = np.dtype(dtype)
  *     self.block_size = np.array(block_size, dtype=np.int64)             # <<<<<<<<<<<<<<
  *     self._labels = None
@@ -7283,7 +7283,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  * 
  * class CompressedSegmentationArray:
  *   def __init__(             # <<<<<<<<<<<<<<
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
  *   ):
  */
 
@@ -7308,7 +7308,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  * 
  *   @property
  *   def grid_size(self):             # <<<<<<<<<<<<<<
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  */
 
@@ -7343,7 +7343,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   /* "compressed_segmentation.pyx":330
  *   @property
  *   def grid_size(self):
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)             # <<<<<<<<<<<<<<
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)             # <<<<<<<<<<<<<<
  * 
  *   def labels(self):
  */
@@ -7353,7 +7353,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_ceil); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 330, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_volume_size); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 330, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 330, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_block_size); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 330, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
@@ -7409,7 +7409,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  * 
  *   @property
  *   def grid_size(self):             # <<<<<<<<<<<<<<
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  */
 
@@ -7430,7 +7430,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
 }
 
 /* "compressed_segmentation.pyx":332
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  *   def labels(self):             # <<<<<<<<<<<<<<
  *     if self._labels is None:
@@ -7470,7 +7470,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  *   def labels(self):
  *     if self._labels is None:             # <<<<<<<<<<<<<<
  *       self._labels = labels(
- *         self.binary, volume_size=self.volume_size,
+ *         self.binary, shape=self.shape,
  */
   __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_labels); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 333, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -7483,7 +7483,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  *   def labels(self):
  *     if self._labels is None:
  *       self._labels = labels(             # <<<<<<<<<<<<<<
- *         self.binary, volume_size=self.volume_size,
+ *         self.binary, shape=self.shape,
  *         dtype=self.dtype, block_size=self.block_size
  */
     __Pyx_GetModuleGlobalName(__pyx_t_1, __pyx_n_s_labels_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 334, __pyx_L1_error)
@@ -7492,7 +7492,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
     /* "compressed_segmentation.pyx":335
  *     if self._labels is None:
  *       self._labels = labels(
- *         self.binary, volume_size=self.volume_size,             # <<<<<<<<<<<<<<
+ *         self.binary, shape=self.shape,             # <<<<<<<<<<<<<<
  *         dtype=self.dtype, block_size=self.block_size
  *       )
  */
@@ -7503,7 +7503,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  *   def labels(self):
  *     if self._labels is None:
  *       self._labels = labels(             # <<<<<<<<<<<<<<
- *         self.binary, volume_size=self.volume_size,
+ *         self.binary, shape=self.shape,
  *         dtype=self.dtype, block_size=self.block_size
  */
     __pyx_t_5 = PyTuple_New(1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 334, __pyx_L1_error)
@@ -7515,20 +7515,20 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
     /* "compressed_segmentation.pyx":335
  *     if self._labels is None:
  *       self._labels = labels(
- *         self.binary, volume_size=self.volume_size,             # <<<<<<<<<<<<<<
+ *         self.binary, shape=self.shape,             # <<<<<<<<<<<<<<
  *         dtype=self.dtype, block_size=self.block_size
  *       )
  */
     __pyx_t_4 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 335, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
-    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_volume_size); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 335, __pyx_L1_error)
+    __pyx_t_6 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_shape); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 335, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_6);
-    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_volume_size, __pyx_t_6) < 0) __PYX_ERR(0, 335, __pyx_L1_error)
+    if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_shape, __pyx_t_6) < 0) __PYX_ERR(0, 335, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
     /* "compressed_segmentation.pyx":336
  *       self._labels = labels(
- *         self.binary, volume_size=self.volume_size,
+ *         self.binary, shape=self.shape,
  *         dtype=self.dtype, block_size=self.block_size             # <<<<<<<<<<<<<<
  *       )
  *     return self._labels
@@ -7546,7 +7546,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  *   def labels(self):
  *     if self._labels is None:
  *       self._labels = labels(             # <<<<<<<<<<<<<<
- *         self.binary, volume_size=self.volume_size,
+ *         self.binary, shape=self.shape,
  *         dtype=self.dtype, block_size=self.block_size
  */
     __pyx_t_6 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_5, __pyx_t_4); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 334, __pyx_L1_error)
@@ -7562,7 +7562,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  *   def labels(self):
  *     if self._labels is None:             # <<<<<<<<<<<<<<
  *       self._labels = labels(
- *         self.binary, volume_size=self.volume_size,
+ *         self.binary, shape=self.shape,
  */
   }
 
@@ -7581,7 +7581,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   goto __pyx_L0;
 
   /* "compressed_segmentation.pyx":332
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  *   def labels(self):             # <<<<<<<<<<<<<<
  *     if self._labels is None:
@@ -7607,7 +7607,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  * 
  *   def numpy(self):             # <<<<<<<<<<<<<<
  *     return decompress(
- *       self.binary, self.volume_size,
+ *       self.binary, self.shape,
  */
 
 /* Python wrapper */
@@ -7645,7 +7645,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  * 
  *   def numpy(self):
  *     return decompress(             # <<<<<<<<<<<<<<
- *       self.binary, self.volume_size,
+ *       self.binary, self.shape,
  *       self.dtype, self.block_size
  */
   __Pyx_XDECREF(__pyx_r);
@@ -7655,18 +7655,18 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
   /* "compressed_segmentation.pyx":342
  *   def numpy(self):
  *     return decompress(
- *       self.binary, self.volume_size,             # <<<<<<<<<<<<<<
+ *       self.binary, self.shape,             # <<<<<<<<<<<<<<
  *       self.dtype, self.block_size
  *     )
  */
   __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_binary); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_volume_size); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 342, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_self, __pyx_n_s_shape); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 342, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
   /* "compressed_segmentation.pyx":343
  *     return decompress(
- *       self.binary, self.volume_size,
+ *       self.binary, self.shape,
  *       self.dtype, self.block_size             # <<<<<<<<<<<<<<
  *     )
  * 
@@ -7743,7 +7743,7 @@ static PyObject *__pyx_pf_23compressed_segmentation_27CompressedSegmentationArra
  * 
  *   def numpy(self):             # <<<<<<<<<<<<<<
  *     return decompress(
- *       self.binary, self.volume_size,
+ *       self.binary, self.shape,
  */
 
   /* function exit code */
@@ -25131,10 +25131,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
 
   /* "compressed_segmentation.pyx":240
  * 
- *   if any(volume_size == 0):
+ *   if any(shape == 0):
  *     return np.zeros((0,), dtype=dtype)             # <<<<<<<<<<<<<<
  * 
- *   grid_size = np.ceil(volume_size / block_size).astype(np.uint64)
+ *   grid_size = np.ceil(shape / block_size).astype(np.uint64)
  */
   __pyx_tuple__12 = PyTuple_Pack(1, __pyx_int_0); if (unlikely(!__pyx_tuple__12)) __PYX_ERR(0, 240, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__12);
@@ -25396,10 +25396,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  *     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
  * 
  * def labels(             # <<<<<<<<<<<<<<
- *   bytes encoded, volume_size, dtype,
+ *   bytes encoded, shape, dtype,
  *   block_size=DEFAULT_BLOCK_SIZE
  */
-  __pyx_tuple__46 = PyTuple_Pack(21, __pyx_n_s_encoded, __pyx_n_s_volume_size, __pyx_n_s_dtype, __pyx_n_s_block_size, __pyx_n_s_grid_size, __pyx_n_s_num_headers, __pyx_n_s_header_bytes, __pyx_n_s_headers, __pyx_n_s_data, __pyx_n_s_offsets, __pyx_n_s_i, __pyx_n_s_lookup_table_offset, __pyx_n_s_encoded_values_offset, __pyx_n_s_labels_2, __pyx_n_s_dtype_bytes, __pyx_n_s_start, __pyx_n_s_end, __pyx_n_s_idx, __pyx_n_s_size, __pyx_n_s_index, __pyx_n_s_idx); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 224, __pyx_L1_error)
+  __pyx_tuple__46 = PyTuple_Pack(21, __pyx_n_s_encoded, __pyx_n_s_shape, __pyx_n_s_dtype, __pyx_n_s_block_size, __pyx_n_s_grid_size, __pyx_n_s_num_headers, __pyx_n_s_header_bytes, __pyx_n_s_headers, __pyx_n_s_data, __pyx_n_s_offsets, __pyx_n_s_i, __pyx_n_s_lookup_table_offset, __pyx_n_s_encoded_values_offset, __pyx_n_s_labels_2, __pyx_n_s_dtype_bytes, __pyx_n_s_start, __pyx_n_s_end, __pyx_n_s_idx, __pyx_n_s_size, __pyx_n_s_index, __pyx_n_s_idx); if (unlikely(!__pyx_tuple__46)) __PYX_ERR(0, 224, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__46);
   __Pyx_GIVEREF(__pyx_tuple__46);
   __pyx_codeobj__47 = (PyObject*)__Pyx_PyCode_New(4, 0, 21, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__46, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_compressed_segmentation_pyx, __pyx_n_s_labels_2, 224, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__47)) __PYX_ERR(0, 224, __pyx_L1_error)
@@ -25408,10 +25408,10 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  * class CompressedSegmentationArray:
  *   def __init__(             # <<<<<<<<<<<<<<
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
  *   ):
  */
-  __pyx_tuple__48 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_binary, __pyx_n_s_volume_size, __pyx_n_s_dtype, __pyx_n_s_block_size); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 319, __pyx_L1_error)
+  __pyx_tuple__48 = PyTuple_Pack(5, __pyx_n_s_self, __pyx_n_s_binary, __pyx_n_s_shape, __pyx_n_s_dtype, __pyx_n_s_block_size); if (unlikely(!__pyx_tuple__48)) __PYX_ERR(0, 319, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__48);
   __Pyx_GIVEREF(__pyx_tuple__48);
   __pyx_codeobj__49 = (PyObject*)__Pyx_PyCode_New(5, 0, 5, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__48, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_compressed_segmentation_pyx, __pyx_n_s_init, 319, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__49)) __PYX_ERR(0, 319, __pyx_L1_error)
@@ -25420,7 +25420,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *   @property
  *   def grid_size(self):             # <<<<<<<<<<<<<<
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  */
   __pyx_tuple__50 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__50)) __PYX_ERR(0, 329, __pyx_L1_error)
@@ -25429,7 +25429,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __pyx_codeobj__51 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__50, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_src_compressed_segmentation_pyx, __pyx_n_s_grid_size, 329, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__51)) __PYX_ERR(0, 329, __pyx_L1_error)
 
   /* "compressed_segmentation.pyx":332
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  *   def labels(self):             # <<<<<<<<<<<<<<
  *     if self._labels is None:
@@ -25445,7 +25445,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *   def numpy(self):             # <<<<<<<<<<<<<<
  *     return decompress(
- *       self.binary, self.volume_size,
+ *       self.binary, self.shape,
  */
   __pyx_tuple__54 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__54)) __PYX_ERR(0, 340, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__54);
@@ -26147,7 +26147,7 @@ if (!__Pyx_RefNanny) {
 
   /* "compressed_segmentation.pyx":226
  * def labels(
- *   bytes encoded, volume_size, dtype,
+ *   bytes encoded, shape, dtype,
  *   block_size=DEFAULT_BLOCK_SIZE             # <<<<<<<<<<<<<<
  * ):
  *   """Extract labels without decompressing."""
@@ -26162,7 +26162,7 @@ if (!__Pyx_RefNanny) {
  *     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
  * 
  * def labels(             # <<<<<<<<<<<<<<
- *   bytes encoded, volume_size, dtype,
+ *   bytes encoded, shape, dtype,
  *   block_size=DEFAULT_BLOCK_SIZE
  */
   __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_23compressed_segmentation_5labels, NULL, __pyx_n_s_compressed_segmentation); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 224, __pyx_L1_error)
@@ -26175,7 +26175,7 @@ if (!__Pyx_RefNanny) {
  * 
  * class CompressedSegmentationArray:             # <<<<<<<<<<<<<<
  *   def __init__(
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
  */
   __pyx_t_2 = __Pyx_Py3MetaclassPrepare((PyObject *) NULL, __pyx_empty_tuple, __pyx_n_s_CompressedSegmentationArray, __pyx_n_s_CompressedSegmentationArray, (PyObject *) NULL, __pyx_n_s_compressed_segmentation, (PyObject *) NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 318, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -26184,7 +26184,7 @@ if (!__Pyx_RefNanny) {
  * 
  * class CompressedSegmentationArray:
  *   def __init__(             # <<<<<<<<<<<<<<
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
  *   ):
  */
   __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_23compressed_segmentation_27CompressedSegmentationArray_1__init__, 0, __pyx_n_s_CompressedSegmentationArray___in, NULL, __pyx_n_s_compressed_segmentation, __pyx_d, ((PyObject *)__pyx_codeobj__49)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 319, __pyx_L1_error)
@@ -26194,7 +26194,7 @@ if (!__Pyx_RefNanny) {
   /* "compressed_segmentation.pyx":320
  * class CompressedSegmentationArray:
  *   def __init__(
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE             # <<<<<<<<<<<<<<
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE             # <<<<<<<<<<<<<<
  *   ):
  *     self.binary = binary
  */
@@ -26211,7 +26211,7 @@ if (!__Pyx_RefNanny) {
  * 
  *   @property
  *   def grid_size(self):             # <<<<<<<<<<<<<<
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  */
   __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_23compressed_segmentation_27CompressedSegmentationArray_3grid_size, 0, __pyx_n_s_CompressedSegmentationArray_grid, NULL, __pyx_n_s_compressed_segmentation, __pyx_d, ((PyObject *)__pyx_codeobj__51)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 329, __pyx_L1_error)
@@ -26222,7 +26222,7 @@ if (!__Pyx_RefNanny) {
  * 
  *   @property             # <<<<<<<<<<<<<<
  *   def grid_size(self):
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  */
   __pyx_t_3 = __Pyx_PyObject_CallOneArg(__pyx_builtin_property, __pyx_t_1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 328, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -26231,7 +26231,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
   /* "compressed_segmentation.pyx":332
- *     return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+ *     return np.ceil(self.shape / self.block_size).astype(np.int64)
  * 
  *   def labels(self):             # <<<<<<<<<<<<<<
  *     if self._labels is None:
@@ -26247,7 +26247,7 @@ if (!__Pyx_RefNanny) {
  * 
  *   def numpy(self):             # <<<<<<<<<<<<<<
  *     return decompress(
- *       self.binary, self.volume_size,
+ *       self.binary, self.shape,
  */
   __pyx_t_3 = __Pyx_CyFunction_New(&__pyx_mdef_23compressed_segmentation_27CompressedSegmentationArray_7numpy, 0, __pyx_n_s_CompressedSegmentationArray_nump, NULL, __pyx_n_s_compressed_segmentation, __pyx_d, ((PyObject *)__pyx_codeobj__55)); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 340, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
@@ -26294,7 +26294,7 @@ if (!__Pyx_RefNanny) {
  * 
  * class CompressedSegmentationArray:             # <<<<<<<<<<<<<<
  *   def __init__(
- *     self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+ *     self, binary, shape, dtype, block_size=DEFAULT_BLOCK_SIZE
  */
   __pyx_t_3 = __Pyx_Py3ClassCreate(((PyObject*)&__Pyx_DefaultClassType), __pyx_n_s_CompressedSegmentationArray, __pyx_empty_tuple, __pyx_t_2, NULL, 0, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 318, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
