@@ -344,6 +344,13 @@ class CompressedSegmentationArray:
     )
 
   def get(self, x,y,z):
+    if (
+      (x < 0 or x >= self.shape[0])
+      or (y < 0 or y >= self.shape[1])
+      or (z < 0 or z >= self.shape[2])
+    ):
+      raise IndexError(f"<{x},{y},{z}> must be contained within {self.shape}")
+
     xyz = np.array([x,y,z], dtype=np.int64)
     gpt = xyz // self.block_size
     grid_size = self.grid_size
