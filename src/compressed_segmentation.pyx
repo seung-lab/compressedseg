@@ -353,23 +353,24 @@ class CompressedSegmentationArray:
         "Only single channel is currently supported in this function."
       )
 
+    binary = self.binary[4:]
     num_headers = grid_size[0] * grid_size[1] * grid_size[2]
     header_idx = gpt[0] + grid_size[0] * (gpt[1] + grid_size[1] * gpt[2])
-    data = np.frombuffer(self.binary[4:], dtype=np.uint32)
+    
+    headers = np.frombuffer(binary[:8*num_headers], dtype=np.uint64)
+    data = np.frombuffer(binary, dtype=np.uint32)
 
-    header = [ data[2 * header_idx], data[2 * header_idx + 1] ]
-
-    cdef uint64_t tbl_off = header[0] & 0xffffff
-    cdef uint64_t encoded_bits = (header[0] >> 24) & 0xff
-    cdef uint64_t packed_off = header[1]
-
+    cdef uint64_t header = headers[header_idx]
+    cdef uint64_t tbl_off = header & 0xffffff
+    cdef uint64_t encoded_bits = (header >> 24) & 0xff
+    cdef uint64_t packed_off = header >> 32
+    
     pt = xyz % self.block_size
 
-    cdef uint64_t bitpos = (
-      self.block_size[0] 
-      * (pt[2] * self.block_size[1] + pt[1]) 
-      * encoded_bits
+    cdef uint64_t bitpos = encoded_bits * (
+      pt[0] + self.block_size[0] * (pt[1] + self.block_size[1] * pt[2])
     )
+
     cdef uint64_t bitshift = bitpos % 32
     cdef uint64_t arraypos = bitpos // 32
     cdef uint64_t bitmask = (1 << encoded_bits) - 1
