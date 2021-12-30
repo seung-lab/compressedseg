@@ -316,7 +316,9 @@ cdef int64_t _search(np.ndarray[uint32_t] offsets, uint32_t value):
   return -1
 
 class CompressedSegmentationArray:
-  def __init__(self, binary, volume_size, dtype, block_size):
+  def __init__(
+    self, binary, volume_size, dtype, block_size=DEFAULT_BLOCK_SIZE
+  ):
     self.binary = binary
     self.volume_size = np.array(volume_size, dtype=np.int64)
     self.dtype = np.dtype(dtype)
@@ -357,9 +359,9 @@ class CompressedSegmentationArray:
 
     header = [ data[2 * header_idx], data[2 * header_idx + 1] ]
 
-    tbl_off = header[0] & 0xffffff
-    encoded_bits = (header[0] >> 24) & 0xff
-    packed_off = header[1]
+    cdef uint64_t tbl_off = header[0] & 0xffffff
+    cdef uint64_t encoded_bits = (header[0] >> 24) & 0xff
+    cdef uint64_t packed_off = header[1]
 
     pt = xyz % self.block_size
 

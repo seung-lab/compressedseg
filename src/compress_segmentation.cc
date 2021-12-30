@@ -194,7 +194,7 @@ void EncodeBlock(const Label* input, const ptrdiff_t input_strides[3],
     output =
         output_vec->data() + encoded_value_base_offset + encoded_size_32bits;
     for (auto value : seen_values_inv) {
-      for (int word_i = 0; word_i < num_32bit_words_per_label; ++word_i) {
+      for (size_t word_i = 0; word_i < num_32bit_words_per_label; ++word_i) {
         output[word_i] = static_cast<uint32_t>(value >> (32 * word_i));
       }
       output += num_32bit_words_per_label;
