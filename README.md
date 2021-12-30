@@ -4,17 +4,25 @@
 ## Library for compressing and decompressing image segmentation (adapted from [neuroglancer](https://github.com/google/neuroglancer))
 
 ```python
-import compressed_segmentation
+import compressed_segmentation as cseg
 
 sx, sy, sz = (128,128,128)
 dtype = np.uint64
 order = 'C'
 
 labels = np.arange(0, sx*sy*sz, dtype=dtype).reshape((sx,sy,sz), order=order)
-compressed = compressed_segmentation.compress(labels, order=order)
-recovered = compressed_segmentation.decompress(
+compressed = cseg.compress(labels, order=order)
+recovered = cseg.decompress(
     compressed, (sx,sy,sz) dtype=dtype, order=order
 )
+
+arr = CompressedSegmentationArray(
+    compressed, volume_size=(sx,sy,sz), dtype=dtype
+)
+label = arr[54,32,103] # random access to single voxels w/o decompressing
+uniq_labels = arr.labels() # get all distinct values w/o decompressing
+recovered = arr.numpy() # decompress to a numpy array, same as decompress
+124213 in arr # test if a value is in the array
 ```
 
 ```bash
