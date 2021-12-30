@@ -41,6 +41,8 @@ Note that limitations in the compressed_segmentation format restrict the size of
 ### Features
 
 * Compression and decompression
+* Random access to voxels without decompression
+* Read out unique values without decompression
 * Command line interface for numpy files
 * (TBD) Interface to relabel and manipulate segmentation from the compressed data
 * C++, Python, and Go interface (see original repo for Golang)
