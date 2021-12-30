@@ -61,6 +61,19 @@ def test_recover_random(dtype, order, block_size, variation):
 
     assert np.all(labels == recovered)
 
+def test_empty_labels():
+    labels = np.zeros((0,), dtype=np.uint32).reshape((0,0,0))
+    compressed = cseg.compress(labels, block_size=(8,8,8))
+
+    try:
+        cseg.labels(b'', block_size=(8,8,8), volume_size=(0,0,0), dtype=np.uint32)
+        assert False
+    except cseg.DecodeError:
+        pass
+    
+    clabels = cseg.labels(compressed, block_size=(8,8,8), volume_size=(0,0,0), dtype=np.uint32)
+    assert all(clabels == labels)
+
 @pytest.mark.parametrize('dtype', (np.uint32, np.uint64))
 @pytest.mark.parametrize('order', ("C", "F"))
 @pytest.mark.parametrize('variation', (1,2,4,8,16,32,64,128,256,512,1024))

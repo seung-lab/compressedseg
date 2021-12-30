@@ -52,6 +52,9 @@ cdef extern from "decompress_segmentation.h" namespace "compress_segmentation":
 
 DEFAULT_BLOCK_SIZE = (8,8,8)
 
+class DecodeError(Exception):
+  pass
+
 def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
   """
   compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C')
@@ -223,6 +226,13 @@ def labels(
   block_size=DEFAULT_BLOCK_SIZE
 ):
   """Extract labels without decompressing."""
+
+  if len(encoded) == 0:
+    raise DecodeError("Empty data stream.")
+
+  if encoded[0] != 1:
+    raise DecodeError("This function only handles single channel images.")
+
   volume_size = np.array(volume_size)
   block_size = np.array(block_size)
 
@@ -304,6 +314,3 @@ cdef int64_t _search(np.ndarray[uint32_t] offsets, uint32_t value):
     return last
 
   return -1
-
-
-
