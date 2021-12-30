@@ -314,3 +314,74 @@ cdef int64_t _search(np.ndarray[uint32_t] offsets, uint32_t value):
     return last
 
   return -1
+
+class CompressedSegmentationArray:
+  def __init__(self, binary, volume_size, dtype, block_size):
+    self.binary = binary
+    self.volume_size = np.array(volume_size, dtype=np.int64)
+    self.dtype = np.dtype(dtype)
+    self.block_size = np.array(block_size, dtype=np.int64)
+    self._labels = None
+
+  @property
+  def grid_size(self):
+    return np.ceil(self.volume_size / self.block_size).astype(np.int64)
+
+  def labels(self):
+    if self._labels is None:
+      self._labels = labels(
+        self.binary, volume_size=self.volume_size,
+        dtype=self.dtype, block_size=self.block_size
+      )
+    return self._labels
+
+  def numpy(self):
+    return decompress(
+      self.binary, self.volume_size, 
+      self.dtype, self.block_size
+    )
+
+  def get(self, x,y,z):
+    xyz = np.array([x,y,z], dtype=np.int64)
+    gpt = xyz // self.block_size
+    grid_size = self.grid_size
+
+    if self.binary[0] != 1:
+      raise DecodeError(
+        "Only single channel is currently supported in this function."
+      )
+
+    num_headers = grid_size[0] * grid_size[1] * grid_size[2]
+    header_idx = gpt[0] + grid_size[0] * (gpt[1] + grid_size[1] * gpt[2])
+    data = np.frombuffer(self.binary[4:], dtype=np.uint32)
+
+    header = [ data[2 * header_idx], data[2 * header_idx + 1] ]
+
+    tbl_off = header[0] & 0xffffff
+    encoded_bits = (header[0] >> 24) & 0xff
+    packed_off = header[1]
+
+    pt = xyz % self.block_size
+
+    cdef uint64_t bitpos = (
+      self.block_size[0] 
+      * (pt[2] * self.block_size[1] + pt[1]) 
+      * encoded_bits
+    )
+    cdef uint64_t bitshift = bitpos % 32
+    cdef uint64_t arraypos = bitpos // 32
+    cdef uint64_t bitmask = (1 << encoded_bits) - 1
+    cdef uint64_t bitval = (data[packed_off + arraypos] >> bitshift) & bitmask
+
+    cdef uint64_t table_entry_size = np.dtype(self.dtype).itemsize // 4
+    cdef uint64_t val = data[tbl_off + bitval * table_entry_size]
+    if table_entry_size > 1:
+      val = val | (data[tbl_off + bitval * table_entry_size + 1] << 32)
+
+    return val
+
+  def __contains__(self, val):
+    return val in self.labels()
+
+  def __getitem__(self, slcs):
+    return self.get(*slcs)
