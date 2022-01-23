@@ -381,7 +381,9 @@ class CompressedSegmentationArray:
     cdef uint64_t bitshift = bitpos % 32
     cdef uint64_t arraypos = bitpos // 32
     cdef uint64_t bitmask = (1 << encoded_bits) - 1
-    cdef uint64_t bitval = (data[packed_off + arraypos] >> bitshift) & bitmask
+    cdef uint64_t bitval = 0
+    if encoded_bits > 0:
+      bitval = (data[packed_off + arraypos] >> bitshift) & bitmask
 
     cdef uint64_t table_entry_size = np.dtype(self.dtype).itemsize // 4
     cdef uint64_t val = data[tbl_off + bitval * table_entry_size]
