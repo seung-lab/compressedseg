@@ -143,5 +143,13 @@ def test_random_access(dtype, block_size):
         x,y,z = np.random.randint(0, sx, size=(3,), dtype=int)
         assert arr[x,y,z] == labels[x,y,z]
 
+    labels = np.zeros((sx, sy, sz), dtype=dtype)
+    binary = cseg.compress(labels, block_size=block_size)
+    arr = cseg.CompressedSegmentationArray(
+        binary, shape=(sx,sy,sz), dtype=dtype, block_size=block_size
+    )
 
+    for i in range(10):
+        x,y,z = np.random.randint(0, sx, size=(3,), dtype=int)
+        assert arr[x,y,z] == labels[x,y,z]
 
