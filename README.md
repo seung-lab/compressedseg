@@ -21,6 +21,7 @@ arr = CompressedSegmentationArray(
 )
 label = arr[54,32,103] # random access to single voxels w/o decompressing
 uniq_labels = arr.labels() # get all distinct values w/o decompressing
+binary2 = arr.remap({ 1: 2 }, preserve_missing_labels=False) # remap labels in segmentation w/o decompressing
 recovered = arr.numpy() # decompress to a numpy array, same as decompress
 124213 in arr # test if a value is in the array
 ```
@@ -43,6 +44,7 @@ Note that limitations in the compressed_segmentation format restrict the size of
 * Compression and decompression
 * Random access to voxels without decompression
 * Read out unique values without decompression
+* Remap labels without decompression
 * Command line interface for numpy files
 * (TBD) Interface to relabel and manipulate segmentation from the compressed data
 * C++, Python, and Go interface (see original repo for Golang)
