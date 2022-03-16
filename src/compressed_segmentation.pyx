@@ -234,10 +234,64 @@ def labels(
     raise DecodeError("This function only handles single channel images.")
 
   shape = np.array(shape)
-  block_size = np.array(block_size)
-
   if any(shape == 0):
     return np.zeros((0,), dtype=dtype)
+
+  index = _compute_label_offsets(encoded, shape, dtype, block_size)
+  index = np.unique(index, axis=0)
+  cdef size_t num_headers = index.shape[0]
+
+  encoded = encoded[4:] # skip the channel length
+  cdef np.ndarray[uint32_t] data = np.frombuffer(encoded, dtype=np.uint32)
+
+  labels = np.concatenate([ 
+    data[index[idx,0]:index[idx,1]]
+    for idx in range(num_headers) 
+  ]).view(dtype)
+
+  return np.unique(labels)
+
+def remap(
+  bytes encoded, shape, dtype, 
+  mapping, preserve_missing_labels=False,
+  block_size=DEFAULT_BLOCK_SIZE
+):
+  """Extract labels without decompressing."""
+
+  if len(encoded) == 0:
+    raise DecodeError("Empty data stream.")
+
+  if encoded[0] != 1:
+    raise DecodeError("This function only handles single channel images.")
+
+  shape = np.array(shape)
+  if np.any(shape == 0):
+    return encoded
+
+  index = _compute_label_offsets(encoded, shape, dtype, block_size)
+  index = np.unique(index, axis=0)
+  cdef size_t num_headers = index.shape[0]
+
+  channel_length = encoded[:4]
+  cdef np.ndarray[uint32_t] data = np.copy(np.frombuffer(encoded[4:], dtype=np.uint32))
+
+  for idx in range(num_headers):
+    labels = data[index[idx,0]:index[idx,1]].view(dtype)
+
+    if preserve_missing_labels:
+      labels = np.array([ mapping.get(label, label) for label in labels ], dtype=dtype)
+    else:
+      labels = np.array([ mapping[label] for label in labels ], dtype=dtype)
+
+    data[index[idx,0]:index[idx,1]] = labels.view(np.uint32)
+
+  return channel_length + data.tobytes()
+
+def _compute_label_offsets(
+  bytes encoded, shape, dtype, block_size
+) -> np.ndarray:
+  shape = np.array(shape)
+  block_size = np.array(block_size)
 
   grid_size = np.ceil(shape / block_size).astype(np.uint64)
   cdef size_t num_headers = reduce(operator.mul, grid_size)
@@ -285,12 +339,7 @@ def labels(
       index[i, 0] = offsets[idx]
       index[i, 1] = offsets[idx+1]
 
-  labels = np.concatenate([ 
-    data[index[idx,0]:index[idx,1]]
-    for idx in range(num_headers) 
-  ]).view(dtype)
-
-  return np.unique(labels)
+  return index
 
 cdef int64_t _search(np.ndarray[uint32_t] offsets, uint32_t value):
   cdef size_t first = 0
@@ -336,6 +385,13 @@ class CompressedSegmentationArray:
         dtype=self.dtype, block_size=self.block_size
       )
     return self._labels
+
+  def remap(self, mapping, preserve_missing_labels=False):
+    return remap(
+      self.binary, self.shape, self.dtype,
+      mapping, preserve_missing_labels,
+      self.block_size
+    )
 
   def numpy(self):
     return decompress(
