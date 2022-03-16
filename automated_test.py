@@ -153,3 +153,24 @@ def test_random_access(dtype, block_size):
         x,y,z = np.random.randint(0, sx, size=(3,), dtype=int)
         assert arr[x,y,z] == labels[x,y,z]
 
+@pytest.mark.parametrize('dtype', [ np.uint32, np.uint64 ])
+@pytest.mark.parametrize('preserve_missing_labels', [ True, False ])
+def test_remap(dtype, preserve_missing_labels):
+    shape = (61,63,67)
+    labels = np.random.randint(0, 15, size=shape).astype(dtype)
+
+    remap = { i: i+20 for i in range(15) }
+    binary = cseg.compress(labels)
+    recovered = cseg.decompress(binary, shape, dtype)
+
+    assert np.all(labels == recovered)
+    assert np.all(cseg.labels(binary, shape, dtype) == list(range(15)))
+
+    binary2 = cseg.remap(
+        binary, shape, dtype, 
+        mapping=remap, 
+        preserve_missing_labels=preserve_missing_labels,
+    )
+    assert np.all(cseg.labels(binary2, shape, dtype) == list(range(20, 35)))
+
+
