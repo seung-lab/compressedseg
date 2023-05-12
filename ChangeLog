@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+* test: py38, 39, 310, 311
+* build: update build for py311
+* fix: bundle cseg\_cli
+
 2.2.0
 -----
 

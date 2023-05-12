@@ -1,3 +1,4 @@
+# cython: language_level=3
 """
 Cython binding for the C++ compressed_segmentation
 library by Jeremy Maitin-Shepard and Stephen Plaza.

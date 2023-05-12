@@ -108,3 +108,4 @@ ENV/
 # Saved Images Cache
 saved_images
 
+src/compressed_segmentation.cpp
