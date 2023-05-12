@@ -1,12 +1,34 @@
 CHANGES
 =======
 
-* build: remove appveyor
-* test: oldest-supported-numpy
-* tests: run GHA on PRs
-* tests: add GHA tests
-* build: use GHA
-* refactor: figured out how to unify 32 and 64 bit functions w/ dummy var
+2.2.0
+-----
+
+* docs: update date
+* docs: show how to use remap
+* feat: remap (#9)
+
+2.1.1
+-----
+
+* install: ensure windows compiles in release mode
+* fix: empty random access (#8)
+* chore: update TROVE identifiers
+
+2.1.0
+-----
+
+* fix: add bounds check for get
+* fix: missing x offset in bitpos
+* refactor: change volume\_size to shape
+* docs: add highlights
+* docs: show how to use CompressedSegmentationArray
+* fix: add default block size to constructor
+* feat: adds CompressedSegmentationArray class for random access to voxels
+* fix: handle empty data streams
+* feat: adds cseg.labels function (#7)
+* feat: add CLI  (#6)
+* refactor: figured out how to unify 32 and 64 bit functions w/ dummy var (#5)
 * chore: add changelog
 * docs: pretty up header
 
