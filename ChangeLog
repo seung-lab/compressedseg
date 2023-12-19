@@ -1,6 +1,10 @@
 CHANGES
 =======
 
+2.2.1
+-----
+
+* config: update formatting of setup.cfg
 * build: update build to use pyx and easier numpy install
 * test: py38, 39, 310, 311
 * build: update build for py311

@@ -26,6 +26,7 @@ from functools import reduce
 
 from libcpp.vector cimport vector
 
+import cython
 cimport numpy as np
 import numpy as np
 
@@ -56,6 +57,7 @@ DEFAULT_BLOCK_SIZE = (8,8,8)
 class DecodeError(Exception):
   pass
 
+@cython.binding(True)
 def compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C'):
   """
   compress(data, block_size=DEFAULT_BLOCK_SIZE, order='C')
@@ -194,6 +196,7 @@ cdef decompress_helper(
   del output
   return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
 
+@cython.binding(True)
 def decompress(
     bytes encoded, volume_size, dtype, 
     block_size=DEFAULT_BLOCK_SIZE, order='C'
@@ -222,6 +225,7 @@ def decompress(
   else:
     raise TypeError("dtype ({}) must be one of uint32 or uint64.".format(dtype))
 
+@cython.binding(True)
 def labels(
   bytes encoded, shape, dtype, 
   block_size=DEFAULT_BLOCK_SIZE
@@ -252,6 +256,7 @@ def labels(
 
   return np.unique(labels)
 
+@cython.binding(True)
 def remap(
   bytes encoded, shape, dtype, 
   mapping, preserve_missing_labels=False,

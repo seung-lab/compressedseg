@@ -36,7 +36,7 @@ setuptools.setup(
             'compressed_segmentation.pyx'
         )],
         language='c++',
-        include_dirs=[ 'include', NumpyImport() ],
+        include_dirs=[ 'include', str(NumpyImport()) ],
         extra_compile_args=extra_compile_args,
     ),
   ],
