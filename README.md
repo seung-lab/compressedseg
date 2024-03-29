@@ -34,7 +34,7 @@ cseg decompress connectomics.npy.cseg --volume-size 512,512,512 --bytes 4
 
 NOTE: This repository is the PyPI distribution repo but is based on work done by Jeremy Maitin-Shepard (Google), Stephen Plaza (Janelia Research Campus), and William Silversmith (Princeton) here: https://github.com/janelia-flyem/compressedseg
 
-This library contains routined to decompress and compress segmentation and to manipulate compressed segmentation data defined by the [neuroglancer project](https://github.com/google/neuroglancer/blob/master/src/neuroglancer/sliceview/compressed_segmentation/README.md). compressed_segmentation essentially renumbers large bit width labels to smaller ones in chunks. This provides for large reductions in memory usage and higher compression.
+This library contains routined to decompress and compress segmentation and to manipulate compressed segmentation data defined by the [neuroglancer project](https://github.com/google/neuroglancer/blob/master/src/sliceview/compressed_segmentation/README.md). compressed_segmentation essentially renumbers large bit width labels to smaller ones in chunks. This provides for large reductions in memory usage and higher compression.
 
 Note that limitations in the compressed_segmentation format restrict the size of the chunk that can be compressed. As this limitation is data dependent, for example a random array with 1024 labels passes testing at 256x256x128, but 256x256x256 often does not.
 

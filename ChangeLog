@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+2.2.2
+-----
+
+* build: update build for py312
+* build: update for py312
+
 2.2.1
 -----
 
