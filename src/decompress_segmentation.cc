@@ -8,10 +8,6 @@
 #include "decompress_segmentation.h"
 
 #include <algorithm>
-#include <unordered_map>
-#include <iostream>
-
-using std::min;
 
 namespace compress_segmentation {
 
@@ -23,7 +19,7 @@ void DecompressChannel(
 	const ptrdiff_t volume_size[3],
 	const ptrdiff_t block_size[3],
 	const ptrdiff_t strides[4],
-	std::vector<Label>* output,
+	Label* output,
 	const ptrdiff_t channel
 ) {
 	const size_t table_entry_size = (sizeof(Label) + sizeof(uint32_t) - 1) / sizeof(uint32_t);
@@ -49,13 +45,13 @@ void DecompressChannel(
 
 				// find absolute positions in output array (+ base_offset)
 				size_t xmin = block[0]*block_size[0];
-				size_t xmax = min(xmin + block_size[0], size_t(volume_size[0]));
+				size_t xmax = std::min(xmin + block_size[0], size_t(volume_size[0]));
 
 				size_t ymin = block[1]*block_size[1];
-				size_t ymax = min(ymin + block_size[1], size_t(volume_size[1]));
+				size_t ymax = std::min(ymin + block_size[1], size_t(volume_size[1]));
 
 				size_t zmin = block[2]*block_size[2];
-				size_t zmax = min(zmin + block_size[2], size_t(volume_size[2]));
+				size_t zmax = std::min(zmin + block_size[2], size_t(volume_size[2]));
 
 				uint64_t bitmask = (1 << encoded_bits) - 1;
 				for (size_t z = zmin; z < zmax; ++z) {
@@ -78,7 +74,7 @@ void DecompressChannel(
 							if (table_entry_size == 2) {
 								val |= uint64_t(input[tableoffset + bitval*table_entry_size+1]) << 32;
 							}
-							(*output)[outindex] = val;
+							output[outindex] = val;
 							bitpos += encoded_bits; 
 						}
 					}
@@ -94,7 +90,7 @@ void DecompressChannels(
 	const ptrdiff_t volume_size[4],
 	const ptrdiff_t block_size[3],
 	const ptrdiff_t strides[4],
-	std::vector<Label>* output
+	Label* output
 ) {
 
   /*
@@ -111,11 +107,7 @@ void DecompressChannels(
   segmentation channel, the compressed segmentation data is simply prefixed with a 
   single 1 value (encoded as a little-endian 32-bit unsigned integer).
   */
-
-  size_t voxels = volume_size[0] * volume_size[1] * volume_size[2];
-  output->resize(voxels * volume_size[3]);
-
-  for (size_t channel_i = 0; channel_i < volume_size[3]; ++channel_i) {
+  for (size_t channel_i = 0; channel_i < static_cast<size_t>(volume_size[3]); ++channel_i) {
 		DecompressChannel(
 			input + input[channel_i], volume_size,
 			block_size, strides, output, channel_i
@@ -128,13 +120,13 @@ void DecompressChannels(
 	  const uint32_t* input, const ptrdiff_t volume_size[3],       \
 	  const ptrdiff_t block_size[3], \
 	  const ptrdiff_t strides[4], \
-	  std::vector<Label>* output, \
+	  Label* output, \
 	  const ptrdiff_t channel);                                \
   template void DecompressChannels<Label>(                             \
 	  const uint32_t* input, const ptrdiff_t volume_size[4],            \
 	  const ptrdiff_t block_size[3], \
 	  const ptrdiff_t strides[4], \
-	  std::vector<Label>* output);                                \
+	  Label* output);                                \
 /**/
 
 DO_INSTANTIATE(uint32_t)

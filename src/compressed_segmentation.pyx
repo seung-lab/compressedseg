@@ -49,7 +49,7 @@ cdef extern from "decompress_segmentation.h" namespace "compress_segmentation":
     const ptrdiff_t volume_size[4],
     const ptrdiff_t block_size[3],
     const ptrdiff_t strides[4],
-    vector[Label]* output
+    Label* output
   )
 
 DEFAULT_BLOCK_SIZE = (8,8,8)
@@ -172,29 +172,28 @@ cdef decompress_helper(
     strides[2] = volsize[3]
     strides[3] = 1
 
-  cdef vector[UINT] *output = new vector[UINT]()
+  voxels = reduce(operator.mul, volume_size)
 
-  DecompressChannels(
-    uintencodedptr,
-    volsize,
-    blksize,
-    strides,
-    output
-  )
-  
-  cdef UINT* output_ptr = <UINT*>&output[0][0]
-  cdef UINT[:] vec_view = <UINT[:output.size()]>output_ptr
+  cdef np.ndarray[UINT] output = np.zeros([voxels], dtype=dtype)
 
-  # possible double free issue
-  # The buffer gets loaded into numpy, but not the vector<uint64_t>
-  # So when numpy clears the buffer, the vector object remains
-  # Maybe we should make a copy of the vector into a regular array.
+  if sizeof(UINT) == 4:
+    DecompressChannels[uint32_t](
+      uintencodedptr,
+      volsize,
+      blksize,
+      strides,
+      <uint32_t*>&output[0]
+    )
+  else:
+    DecompressChannels[uint64_t](
+      uintencodedptr,
+      volsize,
+      blksize,
+      strides,
+      <uint64_t*>&output[0]
+    )
 
-  # This construct is required by python 2.
-  # Python 3 can just do np.frombuffer(vec_view, ...)
-  buf = bytearray(vec_view[:])
-  del output
-  return np.frombuffer(buf, dtype=dtype).reshape( volume_size, order=order )
+  return output.reshape( volume_size, order=order )
 
 @cython.binding(True)
 def decompress(

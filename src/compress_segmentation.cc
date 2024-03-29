@@ -108,11 +108,11 @@ void EncodeBlock(const Label* input, const ptrdiff_t input_strides[3],
   Label previous_value = input[0] + 1;
   {
     auto* input_z = input;
-    for (size_t z = 0; z < actual_size[2]; ++z) {
+    for (size_t z = 0; z < static_cast<size_t>(actual_size[2]); ++z) {
       auto* input_y = input_z;
-      for (size_t y = 0; y < actual_size[1]; ++y) {
+      for (size_t y = 0; y < static_cast<size_t>(actual_size[1]); ++y) {
         auto* input_x = input_y;
-        for (size_t x = 0; x < actual_size[0]; ++x) {
+        for (size_t x = 0; x < static_cast<size_t>(actual_size[0]); ++x) {
           auto value = *input_x;
           // If this value matches the previous value, we can skip the more
           // expensive hash table lookup.
@@ -170,11 +170,11 @@ void EncodeBlock(const Label* input, const ptrdiff_t input_strides[3],
   // Write encoded representation.
   {
     auto* input_z = input;
-    for (size_t z = 0; z < actual_size[2]; ++z) {
+    for (size_t z = 0; z < static_cast<size_t>(actual_size[2]); ++z) {
       auto* input_y = input_z;
-      for (size_t y = 0; y < actual_size[1]; ++y) {
+      for (size_t y = 0; y < static_cast<size_t>(actual_size[1]); ++y) {
         auto* input_x = input_y;
-        for (size_t x = 0; x < actual_size[0]; ++x) {
+        for (size_t x = 0; x < static_cast<size_t>(actual_size[0]); ++x) {
           auto value = *input_x;
           uint32_t index = seen_values.at(value);
           size_t output_offset = x + block_size[0] * (y + block_size[1] * z);
@@ -225,12 +225,10 @@ int CompressChannel(const Label* input, const ptrdiff_t input_strides[3],
             block[0] + grid_size[0] * (block[1] + grid_size[1] * block[2]);
         ptrdiff_t actual_size[3];
         ptrdiff_t input_offset = 0;
-        size_t num_values = 1;
         for (size_t i = 0; i < 3; ++i) {
           auto pos = block[i] * block_size[i];
           actual_size[i] = std::min(block_size[i], volume_size[i] - pos);
           input_offset += pos * input_strides[i];
-          num_values *= actual_size[i];
         }
         const size_t encoded_value_base_offset = output->size() - base_offset;
         size_t encoded_bits, table_offset;
@@ -257,7 +255,7 @@ int CompressChannels(const Label* input, const ptrdiff_t input_strides[4],
                       const ptrdiff_t block_size[3],
                       std::vector<uint32_t>* output) {
   output->resize(volume_size[3]);
-  for (size_t channel_i = 0; channel_i < volume_size[3]; ++channel_i) {
+  for (size_t channel_i = 0; channel_i < static_cast<size_t>(volume_size[3]); ++channel_i) {
     (*output)[channel_i] = output->size();
     int error = CompressChannel(input + input_strides[3] * channel_i, input_strides,
                     volume_size, block_size, output);
