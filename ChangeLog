@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+2.3.0
+-----
+
+* ci: update cibuildwheel
+* perf+refactor: avoid extra copy during decompress
+* docs: update hyperlink
+
 2.2.2
 -----
 
