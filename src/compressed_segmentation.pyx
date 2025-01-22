@@ -416,7 +416,9 @@ class CompressedSegmentationArray:
     gpt = xyz // self.block_size
     grid_size = self.grid_size
 
-    if self.binary[0] != 1:
+    channel_offset = int.from_bytes(self.binary[:4], 'little')
+
+    if channel_offset != 1:
       raise DecodeError(
         "Only single channel is currently supported in this function."
       )
@@ -449,7 +451,7 @@ class CompressedSegmentationArray:
     cdef uint64_t table_entry_size = np.dtype(self.dtype).itemsize // 4
     cdef uint64_t val = data[tbl_off + bitval * table_entry_size]
     if table_entry_size > 1:
-      val = val | (data[tbl_off + bitval * table_entry_size + 1] << 32)
+      val = val | (<uint64_t>(data[tbl_off + bitval * table_entry_size + 1]) << 32)
 
     return val
 
