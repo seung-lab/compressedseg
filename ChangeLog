@@ -1,6 +1,17 @@
 CHANGES
 =======
 
+2.3.2
+-----
+
+* ci: update build for py313 and new artifact uploader
+* fix: uint64 handling in single voxel accesses
+
+2.3.1
+-----
+
+* ci: rebuild for numpy 2.0
+
 2.3.0
 -----
 
