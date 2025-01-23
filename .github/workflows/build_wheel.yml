@@ -5,7 +5,7 @@ on:
     tags:
       - '*'
 env:
-  CIBW_SKIP: pp* *-musllinux_aarch64
+  CIBW_SKIP: pp* *-musllinux_aarch64 *i686*
 
 jobs:
   build_wheels:
